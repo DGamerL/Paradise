@@ -1455,7 +1455,7 @@
 		to_chat(usr, "<span class='warning'>You need to be an administrator to access this.</span>")
 		return
 
-	if(alert(usr, "Are you sure you want to do this? This WILL lag out the entire server.", "Confirmation", "Yes", "No") != "Yes")
+	if(alert(usr, "Are you sure you want to do this? This will lag out the entire server, and reset all tiles to a normal O2/N2 mix.", "Confirmation", "Yes", "No") != "Yes")
 		return
 
 	for(var/turf/simulated/atmos_turf in SSair.active_turfs)
