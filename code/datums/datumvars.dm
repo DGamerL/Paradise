@@ -1446,3 +1446,26 @@
 		to_chat(src, "<span class='debug'>Now showing GLOB.[var_search].</span>")
 		return debug_variables(result)
 	to_chat(src, "<span class='debug'>GLOB.[var_search] returned [result].</span>")
+
+/client/proc/reset_global_atmos()
+	set category = "Debug"
+	set name = "Reset global atmos"
+
+	if(!check_rights(R_ADMIN))
+		to_chat(usr, "<span class='warning'>You need to be an administrator to access this.</span>")
+		return
+
+	if(alert(usr, "Are you sure you want to do this? This WILL lag out the entire server.", "Confirmation", "Yes", "No") != "Yes")
+		return
+
+	for(var/turf/simulated/atmos_turf in SSair.active_turfs)
+		if(!is_station_level(atmos_turf.z))
+			continue
+		atmos_turf.air.oxygen = MOLES_O2STANDARD
+		atmos_turf.air.nitrogen = MOLES_N2STANDARD
+		atmos_turf.air.carbon_dioxide = 0
+		atmos_turf.air.toxins = 0
+		atmos_turf.air.sleeping_agent = 0
+		atmos_turf.air.agent_b = 0
+		atmos_turf.air.temperature = T20C
+	message_admins("Done!")
