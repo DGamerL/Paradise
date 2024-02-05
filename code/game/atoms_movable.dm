@@ -38,6 +38,13 @@
 	/// Icon state for thought bubbles. Normally set by mobs.
 	var/thought_bubble_image = "thought_bubble"
 
+	/// A list of all the directional lights that are connected to the atom
+	var/list/medium_lights = list()
+
+	var/list/mdir_light_rgbas = null
+	var/list/obj/overlay/simple_light/medium/directional/mdir_lights
+	var/static/list/mdir_light_dists = list(0, 2.5, 5)
+
 /atom/movable/attempt_init(loc, ...)
 	var/turf/T = get_turf(src)
 	if(T && SSatoms.initialized != INITIALIZATION_INSSATOMS && GLOB.space_manager.is_zlevel_dirty(T.z))
@@ -77,6 +84,8 @@
 	loc = null
 	if(pulledby)
 		pulledby.stop_pulling()
+	if(mdir_lights)
+		destroy_mdir_light()
 
 //Returns an atom's power cell, if it has one. Overload for individual items.
 /atom/movable/proc/get_cell()
