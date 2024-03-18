@@ -48,6 +48,9 @@
 		// Whew! Good thing I'm indestructible! (or already dead)
 		return FALSE
 
+	if(length(mind?.antag_datums) || mind?.assigned_job == "Security Officer") // I ded pls nerf
+		return FALSE
+
 	set_stat(DEAD)
 	..()
 
