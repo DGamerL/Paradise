@@ -19,7 +19,6 @@
 	action_icon_state = "seismic_stomp"
 	base_cooldown = 60 SECONDS
 	required_blood = 30
-	var/max_range = 4
 
 /obj/effect/proc_holder/spell/vampire/self/stomp/can_cast(mob/living/carbon/user, charge_check, show_message)
 	if(user.legcuffed)
@@ -29,10 +28,10 @@
 /obj/effect/proc_holder/spell/vampire/self/stomp/cast(list/targets, mob/user)
 	var/turf/T = get_turf(user)
 	playsound(T, 'sound/effects/meteorimpact.ogg', 100, TRUE)
-	addtimer(CALLBACK(src, PROC_REF(hit_check), 1, T, user), 0.2 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(stomp_hit_check), 1, T, user, 4), 0.2 SECONDS)
 	new /obj/effect/temp_visual/stomp(T)
 
-/obj/effect/proc_holder/spell/vampire/self/stomp/proc/hit_check(range, turf/start_turf, mob/user, safe_targets = list())
+/obj/effect/proc_holder/spell/vampire/proc/stomp_hit_check(range, turf/start_turf, mob/user, safe_targets = list(), max_range)
 	// gets the two outermost turfs in a ring, we get two so people cannot "walk over" the shockwave
 	var/list/targets = view(range, start_turf) - view(range - 2, start_turf)
 	for(var/turf/simulated/floor/flooring in targets)
@@ -54,7 +53,7 @@
 		safe_targets += L
 	var/new_range = range + 1
 	if(new_range <= max_range)
-		addtimer(CALLBACK(src, PROC_REF(hit_check), new_range, start_turf, user, safe_targets), 0.2 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(stomp_hit_check), new_range, start_turf, user, safe_targets, max_range), 0.2 SECONDS)
 
 /obj/effect/temp_visual/stomp
 	icon = 'icons/effects/seismic_stomp_effect.dmi'
@@ -75,7 +74,7 @@
 /obj/effect/proc_holder/spell/vampire/self/overwhelming_force
 	name = "Overwhelming Force"
 	desc = "When toggled you will automatically pry open doors that you bump into if you do not have access."
-	gain_desc = "You have gained the ability to force open doors at a small blood cost."
+	gain_desc = "You have gained the ability to force open doors."
 	base_cooldown = 2 SECONDS
 	action_icon_state = "OH_YEAAAAH"
 
@@ -226,11 +225,12 @@
 
 /obj/effect/proc_holder/spell/vampire/arena/cast(list/targets, mob/living/user)
 	var/target = targets[1] // We only want to dash towards the first mob in our targeting list, if somehow multiple ended up in there
-	if(!targets)
-		return
 
 	if(timer) // Recast to dispel the wall and buff early
 		dispel(user)
+		return
+
+	if(!target)
 		return
 
 	// First we leap towards the enemy target
@@ -243,17 +243,19 @@
 		var/move_dir = get_dir(user, target)
 		user.forceMove(get_step(user, move_dir))
 		if(get_turf(user) == get_turf(target))
-			user.remove_stun_absorption("gargantua")
 			user.set_body_position(STANDING_UP)
 			user.transform = matrix()
 			break
 		sleep(1)
 	animate(user, 0.2 SECONDS, pixel_z = -64, flags = ANIMATION_RELATIVE, easing = SINE_EASING|EASE_IN)
-	// They get a cool soundeffect and a visual, as a treat
 
+	// They get a cool soundeffect and a visual, as a treat
 	playsound(get_turf(user), 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	new /obj/effect/temp_visual/stomp(get_turf(user))
 
+	stomp_hit_check(1, get_turf(user), user, 4)
+	boot_out_invaders(user, target, ARENA_SIZE)
+	user.remove_stun_absorption("gargantua")
 	// Now we build the arena and give the caster the buff
 
 	user.apply_status_effect(STATUS_EFFECT_VAMPIRE_GLADIATOR)
@@ -288,5 +290,15 @@
 	cooldown_handler.start_recharge()
 	user.remove_status_effect(STATUS_EFFECT_VAMPIRE_GLADIATOR)
 	user.visible_message("<span class='warning'>The arena begins to dissipate.</span>")
+
+/obj/effect/proc_holder/spell/vampire/arena/proc/boot_out_invaders(mob/user, mob/mob_to_keep, range_to_boot)
+	for(var/mob/mob_to_boot in range(2, mob_to_keep))
+		if((mob_to_boot == user) || (mob_to_boot == mob_to_keep))
+			continue
+		var/distance = get_dist(mob_to_boot, mob_to_keep)
+		if(distance == 0)
+			mob_to_boot.throw_at(get_step(mob_to_keep, pick(GLOB.cardinal)), range_to_boot + 2, 1, user)
+		else if(distance <= range_to_boot)
+			mob_to_boot.throw_at(get_step(mob_to_boot, get_dir(mob_to_keep, mob_to_boot)), range_to_boot + 2, 1, user)
 
 #undef ARENA_SIZE
