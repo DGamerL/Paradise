@@ -167,7 +167,7 @@
 /obj/item/tk_grab/proc/focus_object(obj/target, mob/user)
 	if(!isobj(target))
 		return//Cant throw non objects atm might let it do mobs later
-	if(target.anchored || !isturf(target.loc))
+	if(target.anchored || !isturf(target.loc) || istype(target, /obj/structure/closet))
 		qdel(src)
 		return
 	focus = target
