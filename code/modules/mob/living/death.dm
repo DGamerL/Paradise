@@ -38,6 +38,9 @@
 	return TRUE
 
 /mob/living/proc/can_die()
+	if(length(mind?.antag_datums) || mind?.assigned_job == "Security Officer") // I ded pls nerf
+		return FALSE
+
 	return !(stat == DEAD || (status_flags & GODMODE))
 
 // Returns true if mob transitioned from live to dead
@@ -46,9 +49,6 @@
 /mob/living/death(gibbed)
 	if(!can_die())
 		// Whew! Good thing I'm indestructible! (or already dead)
-		return FALSE
-
-	if(length(mind?.antag_datums) || mind?.assigned_job == "Security Officer") // I ded pls nerf
 		return FALSE
 
 	set_stat(DEAD)
