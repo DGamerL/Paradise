@@ -232,21 +232,12 @@
 /turf/simulated/floor/engine/cult
 	name = "engraved floor"
 	icon_state = "cult"
+	animation = /obj/effect/temp_visual/cult/turf/open/floor
+	animation_delay = 2
 
 /turf/simulated/floor/engine/cult/Initialize(mapload)
 	. = ..()
 	icon_state = GET_CULT_DATA(cult_floor_icon_state, initial(icon_state))
-
-/turf/simulated/floor/engine/cult/Entered(atom/A, atom/OL, ignoreRest)
-	. = ..()
-	var/counter = 0
-	for(var/obj/effect/temp_visual/cult/turf/open/floor/floor in contents)
-		if(++counter == 3)
-			return
-
-	if(!. && isliving(A))
-		sleep(2 DECISECONDS)
-		new /obj/effect/temp_visual/cult/turf/open/floor(src)
 
 /turf/simulated/floor/engine/cult/narsie_act()
 	return

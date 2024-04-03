@@ -162,7 +162,6 @@
 		H.slip("the floor", 10 SECONDS, tilesSlipped = 4, walkSafely = 0, slipAny = 1)
 	return
 
-//Clockwork floor: Slowly heals toxin damage on nearby servants.
 /turf/simulated/floor/clockwork
 	name = "clockwork floor"
 	desc = "Tightly-pressed brass tiles. They emit minute vibration."
@@ -171,6 +170,8 @@
 	var/dropped_brass
 	var/uses_overlay = TRUE
 	var/obj/effect/clockwork/overlay/floor/realappearence
+	animation = /obj/effect/temp_visual/ratvar/floor
+	animation_delay = 2
 
 /turf/simulated/floor/clockwork/Initialize(mapload)
 	. = ..()
@@ -179,17 +180,6 @@
 		new /obj/effect/temp_visual/ratvar/beam(src)
 		realappearence = new /obj/effect/clockwork/overlay/floor(src)
 		realappearence.linked = src
-
-/turf/simulated/floor/clockwork/Entered(atom/A, atom/OL, ignoreRest)
-	. = ..()
-	var/counter = 0
-	for(var/obj/effect/temp_visual/ratvar/floor/floor in contents)
-		if(++counter == 3)
-			return
-
-	if(!. && isliving(A))
-		sleep(2 DECISECONDS)
-		new /obj/effect/temp_visual/ratvar/floor(src)
 
 /turf/simulated/floor/clockwork/Destroy()
 	if(uses_overlay && realappearence)

@@ -33,12 +33,24 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	var/clawfootstep = FOOTSTEP_HARD_CLAW
 	var/heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
+	/// The amount of animations we should have playing at most on this floor. Increasing this number is not recommended
+	var/animation_limit = 3
+	/// A list of all the animations we currently have playing on this floor
+	var/animation_list = list()
+	/// The effect we play if we move on this turf. If this is null, no proximity component will be attached.
+	var/obj/effect/temp_visual/animation
+	/// The delay that the animation should have, leave null for no delay
+	var/animation_delay
+
 /turf/simulated/floor/Initialize(mapload)
 	. = ..()
 	if(icon_state in GLOB.icons_to_ignore_at_floor_init) //so damaged/burned tiles or plating icons aren't saved as the default
 		icon_regular_floor = "floor"
 	else
 		icon_regular_floor = icon_state
+
+	if(animation)
+		AddComponent(/datum/component/proximity_monitor)
 
 //turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0)
 //	if((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
@@ -264,3 +276,23 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 
 /turf/simulated/floor/can_have_cabling()
 	return !burnt && !broken
+
+/turf/simulated/floor/HasProximity(atom/movable/AM)
+	if(length(animation_list) >= animation_limit)
+		return FALSE
+
+	if(!(get_dist(src, AM) < 1))
+		message_admins("Distance")
+		return FALSE
+
+	message_admins("Before sleep")
+	if(animation_delay)
+		sleep(animation_delay)
+	message_admins("After sleep")
+	var/obj/effect/temp_visual/visual = new animation(get_turf(src))
+	animation_list += visual
+	RegisterSignal(visual, COMSIG_PARENT_QDELETING, PROC_REF(remove_from_list), visual)
+	return TRUE
+
+/turf/simulated/floor/proc/remove_from_list(obj/effect/temp_visual/effect)
+	animation_list -= effect
