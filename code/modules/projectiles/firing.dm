@@ -39,27 +39,27 @@
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread)
 	var/turf/curloc = get_turf(user)
 	if(!istype(targloc) || !istype(curloc) || !BB)
-		return 0
+		return FALSE
 	BB.ammo_casing = src
 
 	if(target && get_dist(user, target) <= 1) //Point blank shot must always hit
 		BB.prehit(target)
 		target.bullet_act(BB, BB.def_zone)
 		QDEL_NULL(BB)
-		return 1
+		return TRUE
 
 	if(targloc == curloc)
 		if(target) //if the target is right on our location we go straight to bullet_act()
 			BB.prehit(target)
 			target.bullet_act(BB, BB.def_zone)
 		QDEL_NULL(BB)
-		return 1
+		return TRUE
 
 	BB.preparePixelProjectile(target, targloc, user, params, spread)
 	if(BB)
 		BB.fire()
 	BB = null
-	return 1
+	return TRUE
 
 /obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)
 	var/dx = abs(target.x - current.x)

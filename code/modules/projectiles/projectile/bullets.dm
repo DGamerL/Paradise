@@ -18,7 +18,7 @@
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.move_resist < INFINITY)
-			var/atom/throw_target = get_edge_target_turf(L, get_dir(src, get_step_away(L, starting)))
+			var/atom/throw_target = get_angle_target_turf(L, turn(dir, 180))
 			L.throw_at(throw_target, 1, 2)
 
 /obj/item/projectile/bullet/weakbullet/booze
