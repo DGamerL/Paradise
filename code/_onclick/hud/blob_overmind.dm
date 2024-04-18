@@ -73,7 +73,13 @@
 /atom/movable/screen/blob/ResourceBlob/Click()
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
-		B.create_resource()
+		B.create_resource(src)
+		update_cost()
+
+/atom/movable/screen/blob/ResourceBlob/proc/update_cost()
+		var/cost = max(40, (20 + GLOB.resource_nodes * 5))
+		name = "Produce Resource Blob ([cost])"
+		desc = "Produces a resource blob for [cost]] resources.<br>Resource blobs will give you resources every few seconds."
 
 /atom/movable/screen/blob/NodeBlob
 	icon_state = "ui_node"

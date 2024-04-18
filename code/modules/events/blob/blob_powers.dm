@@ -89,11 +89,10 @@
 		S.color = blob_reagent_datum.color
 	return
 
-/mob/camera/blob/verb/create_resource()
+/mob/camera/blob/verb/create_resource(atom/movable/screen/ui_button)
 	set category = "Blob"
-	set name = "Create Resource Blob (40)"
+	set name = "Create Resource Blob"
 	set desc = "Create a resource tower which will generate points for you."
-
 
 	var/turf/T = get_turf(src)
 
@@ -119,7 +118,8 @@
 			to_chat(src, "<span class='warning'>You need to place this blob closer to a node or core!</span>")
 			return //handholdotron 2000
 
-	if(!can_buy(40))
+	var/cost = max(40, (20 + GLOB.resource_nodes * 5))
+	if(!can_buy(cost))
 		return
 
 	B.color = blob_reagent_datum.color
@@ -127,8 +127,7 @@
 	var/obj/structure/blob/resource/R = locate() in T
 	if(R)
 		R.overmind = src
-
-	return
+		RegisterSignal(R, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/obj/structure/blob/resource, update_cost), ui_button)
 
 /mob/camera/blob/verb/create_node()
 	set category = "Blob"
