@@ -57,44 +57,17 @@
 
 /datum/species/unathi/on_species_gain(mob/living/carbon/human/H)
 	..()
-	var/datum/action/innate/ignite/fire = new()
+	var/datum/action/innate/unathi_ignite/fire = new()
+	var/datum/action/innate/hide_accessory/tail/tail = new()
 	fire.Grant(H)
+	tail.Grant(H)
 
 /datum/species/unathi/on_species_loss(mob/living/carbon/human/H)
 	..()
 	for(var/datum/action/innate/ignite/fire in H.actions)
 		fire.Remove(H)
-
-/datum/action/innate/ignite
-	name = "Ignite"
-	desc = "A fire forms in your mouth, fierce enough to... light a cigarette. Requires you to drink welding fuel beforehand."
-	icon_icon = 'icons/obj/cigarettes.dmi'
-	button_icon_state = "match_unathi"
-	var/cooldown = 0
-	var/cooldown_duration = 20 SECONDS
-	var/welding_fuel_used = 3 //one sip, with less strict timing
-	check_flags = AB_CHECK_HANDS_BLOCKED
-
-/datum/action/innate/ignite/Activate()
-	var/mob/living/carbon/human/user = owner
-	if(world.time <= cooldown)
-		to_chat(user, "<span class='warning'>Your throat hurts too much to do it right now. Wait [round((cooldown - world.time) / 10)] seconds and try again.</span>")
-		return
-	if(!welding_fuel_used || user.reagents.has_reagent("fuel", welding_fuel_used))
-		if((user.head?.flags_cover & HEADCOVERSMOUTH) || (user.wear_mask?.flags_cover & MASKCOVERSMOUTH) && !user.wear_mask?.up)
-			to_chat(user, "<span class='warning'>Your mouth is covered.</span>")
-			return
-		var/obj/item/match/unathi/fire = new(user.loc, src)
-		if(user.put_in_hands(fire))
-			to_chat(user, "<span class='notice'>You ignite a small flame in your mouth.</span>")
-			user.reagents.remove_reagent("fuel", 50) //slightly high, but I'd rather avoid it being TOO spammable.
-			cooldown = world.time + cooldown_duration
-		else
-			qdel(fire)
-			to_chat(user, "<span class='warning'>You don't have any free hands.</span>")
-	else
-		to_chat(user, "<span class='warning'>You need to drink welding fuel first.</span>")
-
+	for(var/datum/action/innate/hide_accessory/tail/tail in H.actions)
+		tail.Remove(H)
 
 /datum/species/unathi/handle_death(gibbed, mob/living/carbon/human/H)
 	H.stop_tail_wagging()

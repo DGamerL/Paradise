@@ -101,3 +101,6 @@
 	var/list/bodyparts = list()
 	/// map organ names to organs
 	var/list/bodyparts_by_name = list()
+
+	/// What body accessory do we have currently hidden
+	var/hidden_accessory
