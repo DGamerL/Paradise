@@ -32,6 +32,11 @@
 	else
 		to_chat(user, "<span class='warning'>You need to drink welding fuel first.</span>")
 
+/datum/action/innate/unathi_ignite/ash_walker
+	desc = "You form a fire in your mouth, fierce enough to... light a cigarette."
+	cooldown_duration = 3 MINUTES
+	welding_fuel_used = 0 // Ash walkers dont need welding fuel to use ignite
+
 /*
  * Hiding your tail/wings ability
  */
@@ -40,25 +45,27 @@
 	name = "Hide tail"
 	desc = "Hide your tail under your clothing."
 	var/accessory_tag_to_hide = "tail"
-	COOLDOWN_DECLARE(time_till_tail)
+	COOLDOWN_DECLARE(time_till_tail) // Why did I do TG cooldowns on actions, which can already handle that
 
 /datum/action/innate/hide_accessory/Activate()
 	var/mob/living/carbon/human/user = owner
+	. = TRUE
 	if(!istype(user))
-		return
+		return FALSE
 	if(!COOLDOWN_FINISHED(src, time_till_tail))
-		// TODO: add message
-		return
+		to_chat(user, "You must wait [COOLDOWN_TIMELEFT(src, time_till_tail) / 10] seconds until you can do this!")
+		return TRUE // For debug purposes
 	if(user.hidden_accessory)
 		unhide_accessory(user)
 		COOLDOWN_START(src, time_till_tail, 3 MINUTES)
-		return
+		return FALSE
 
 /datum/action/innate/hide_accessory/proc/unhide_accessory(mob/living/carbon/human/user)
 	if(!user.hidden_accessory)
 		return
 	user.tail = user.hidden_accessory
 	user.hidden_accessory = null
+	user.update_tail_layer()
 
 /datum/action/innate/hide_accessory/tail
 
@@ -68,9 +75,11 @@
 	if(!user.tail || !.)
 		return
 
+	to_chat(user, "You hide your tail.")
+	user.remove_overlay(TAIL_LAYER)
 	user.hidden_accessory = accessory_tag_to_hide
 	user.tail = null
-	user.update_tail_layer()
+	COOLDOWN_START(src, time_till_tail, 3 MINUTES)
 
 /datum/action/innate/hide_accessory/wing
 

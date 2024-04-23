@@ -102,12 +102,12 @@
 	..()
 	for(var/datum/action/innate/ignite/fire in H.actions)
 		fire.Remove(H)
-	var/datum/action/innate/ignite/ash_walker/fire = new()
+	var/datum/action/innate/unathi_ignite/ash_walker/fire = new()
 	fire.Grant(H)
 
 /datum/species/unathi/ashwalker/on_species_loss(mob/living/carbon/human/H)
 	..()
-	for(var/datum/action/innate/ignite/ash_walker/fire in H.actions)
+	for(var/datum/action/innate/unathi_ignite/ash_walker/fire in H.actions)
 		fire.Remove(H)
 
 /datum/species/unathi/ashwalker/movement_delay(mob/living/carbon/human/H)
@@ -115,8 +115,3 @@
 	var/turf/our_turf = get_turf(H)
 	if(!is_mining_level(our_turf.z))
 		. -= speed_mod
-
-/datum/action/innate/ignite/ash_walker
-	desc = "You form a fire in your mouth, fierce enough to... light a cigarette."
-	cooldown_duration = 3 MINUTES
-	welding_fuel_used = 0 // Ash walkers dont need welding fuel to use ignite
