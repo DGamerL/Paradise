@@ -99,7 +99,18 @@
 /datum/species/vox/on_species_gain(mob/living/carbon/human/H)
 	..()
 	updatespeciescolor(H)
-	H.update_icons()
+	var/datum/action/innate/hide_accessory/tail/tail = new()
+	tail.Grant(H)
+
+/datum/species/vox/on_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	for(var/datum/action/innate/action in H.actions)
+		if(istype(action, /datum/action/innate/ignite))
+			action.Remove(H)
+			continue
+		if(istype(action, /datum/action/innate/hide_accessory/tail))
+			action.Remove(H)
+			continue
 
 /datum/species/vox/updatespeciescolor(mob/living/carbon/human/H, owner_sensitive = 1) //Handling species-specific skin-tones for the Vox race.
 	if(H.dna.species.bodyflags & HAS_ICON_SKIN_TONE)

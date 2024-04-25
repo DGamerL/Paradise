@@ -52,7 +52,9 @@
 /datum/species/moth/on_species_gain(mob/living/carbon/human/H)
 	..()
 	var/datum/action/innate/cocoon/cocoon = new()
+	var/datum/action/innate/hide_accessory/wing/wing_hide = new()
 	cocoon.Grant(H)
+	wing_hide.Grant(H)
 	RegisterSignal(H, COMSIG_LIVING_FIRE_TICK, PROC_REF(check_burn_wings))
 	RegisterSignal(H, COMSIG_LIVING_AHEAL, PROC_REF(on_aheal))
 	RegisterSignal(H, COMSIG_HUMAN_CHANGE_BODY_ACCESSORY, PROC_REF(on_change_body_accessory))
@@ -60,8 +62,14 @@
 
 /datum/species/moth/on_species_loss(mob/living/carbon/human/H)
 	..()
-	for(var/datum/action/innate/cocoon/cocoon in H.actions)
-		cocoon.Remove(H)
+	for(var/datum/action/innate/action in H.actions)
+		if(istype(action, /datum/action/innate/cocoon))
+			action.Remove(H)
+			continue
+		if(istype(action, /datum/action/innate/hide_accessory/wing))
+			action.Remove(H)
+			continue
+
 	UnregisterSignal(H, COMSIG_LIVING_FIRE_TICK)
 	UnregisterSignal(H, COMSIG_LIVING_AHEAL)
 	UnregisterSignal(H, COMSIG_HUMAN_CHANGE_BODY_ACCESSORY)

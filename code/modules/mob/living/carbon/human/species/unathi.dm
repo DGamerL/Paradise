@@ -64,10 +64,13 @@
 
 /datum/species/unathi/on_species_loss(mob/living/carbon/human/H)
 	..()
-	for(var/datum/action/innate/ignite/fire in H.actions)
-		fire.Remove(H)
-	for(var/datum/action/innate/hide_accessory/tail/tail in H.actions)
-		tail.Remove(H)
+	for(var/datum/action/innate/action in H.actions)
+		if(istype(action, /datum/action/innate/ignite))
+			action.Remove(H)
+			continue
+		if(istype(action, /datum/action/innate/hide_accessory/tail))
+			action.Remove(H)
+			continue
 
 /datum/species/unathi/handle_death(gibbed, mob/living/carbon/human/H)
 	H.stop_tail_wagging()

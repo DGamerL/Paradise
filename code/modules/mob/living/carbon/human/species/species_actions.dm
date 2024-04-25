@@ -78,6 +78,13 @@
 	user.update_tail_layer()
 	time_till_reveal = null
 
+/datum/action/innate/hide_accessory/proc/forceful_unhide(mob/living/carbon/human/user)
+	if(!user || QDELETED(user)) // Sanity checks
+		return
+	COOLDOWN_START(src, time_till_tail, 5 MINUTES) // Ouch, my tail!
+	to_chat(user, "<span class='warning'>Your tail hurts so much, you have to untuck it!</span>")
+	unhide_accessory()
+
 /datum/action/innate/hide_accessory/tail
 
 /datum/action/innate/hide_accessory/tail/Activate()
@@ -92,7 +99,7 @@
 	body_accessory_hidden = user.body_accessory
 	user.body_accessory = null
 	user.update_tail_layer()
-	time_till_reveal = addtimer(CALLBACK(PROC_REF(forceful_unhide)), 20 MINUTES, TIMER_STOPPABLE)
+	time_till_reveal = addtimer(CALLBACK(src, PROC_REF(forceful_unhide), user), 20 MINUTES, TIMER_STOPPABLE)
 	COOLDOWN_START(src, time_till_tail, 3 MINUTES)
 
 /datum/action/innate/hide_accessory/wing

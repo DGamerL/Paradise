@@ -1232,6 +1232,7 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
+	tuckable = FALSE
 
 /obj/item/clothing/suit/mantle/regal
 	name = "regal shawl"
