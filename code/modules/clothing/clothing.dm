@@ -596,6 +596,8 @@
 	var/list/hide_tail_by_species = null
 	/// Maximum weight class of an item in the suit storage slot.
 	var/max_suit_w = WEIGHT_CLASS_BULKY
+	/// Can we tuck our tails/wings under this suit?
+	var/tuckable = TRUE
 
 /obj/item/clothing/suit/Initialize(mapload)
 	. = ..()

@@ -17,7 +17,6 @@
 	/// Map of huds viewing a button with our action -> their button
 	var/list/viewers = list()
 
-
 /datum/action/New(Target)
 	target = Target
 
@@ -154,7 +153,6 @@
 	if(!our_hud || viewers[our_hud]) // There's no point in this if you have no hud in the first place
 		return
 
-
 	var/atom/movable/screen/movable/action_button/button = CreateButton()
 	SetId(button, viewer)
 
@@ -166,7 +164,6 @@
 	button.load_position(viewer)
 	viewer.update_action_buttons()
 
-
 //Removes our action button from the screen of a player
 /datum/action/proc/HideFrom(mob/viewer)
 	var/datum/hud/our_hud = viewer.hud_used
@@ -175,7 +172,6 @@
 	if(button)
 		button.clean_up_keybinds(viewer)
 		qdel(button)
-
 
 /datum/action/proc/CreateButton()
 	var/atom/movable/screen/movable/action_button/button = new()
@@ -187,7 +183,6 @@
 	our_description += button.desc
 	button.desc = our_description.Join(" ")
 	return button
-
 
 /datum/action/proc/SetId(atom/movable/screen/movable/action_button/our_button, mob/owner)
 	//button id generation
@@ -213,7 +208,6 @@
 	img.color = "#000000"
 	img.plane = FLOAT_PLANE + 1
 	B.add_overlay(img)
-
 
 /datum/action/proc/ApplyIcon(atom/movable/screen/movable/action_button/current_button)
 	current_button.cut_overlays()

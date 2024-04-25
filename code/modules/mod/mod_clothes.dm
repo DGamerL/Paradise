@@ -37,6 +37,7 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	hide_tail_by_species = list("modsuit")
+	tuckable = FALSE
 	sprite_sheets = list(
 		"Vulpkanin" = 'icons/mob/clothing/modsuit/species/vulp_modsuits.dmi',
 		"Tajaran" = 'icons/mob/clothing/modsuit/species/taj_modsuits.dmi',

@@ -44,8 +44,14 @@
 /datum/action/innate/hide_accessory
 	name = "Hide tail"
 	desc = "Hide your tail under your clothing."
-	var/accessory_tag_to_hide = "tail"
-	COOLDOWN_DECLARE(time_till_tail) // Why did I do TG cooldowns on actions, which can already handle that
+	button_icon_state = "tail"
+	/// The body accessory
+	var/body_accessory_hidden
+	/// The body accessory's icon state
+	var/hidden_accessory
+	/// The timer that counts down until our accessory is forcefully revealed!
+	var/time_till_reveal
+	COOLDOWN_DECLARE(time_till_tail)
 
 /datum/action/innate/hide_accessory/Activate()
 	var/mob/living/carbon/human/user = owner
@@ -53,41 +59,61 @@
 	if(!istype(user))
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, time_till_tail))
-		to_chat(user, "You must wait [COOLDOWN_TIMELEFT(src, time_till_tail) / 10] seconds until you can do this!")
-		return TRUE // For debug purposes
-	if(user.hidden_accessory)
+		to_chat(user, "<span class='notice'>You must wait [COOLDOWN_TIMELEFT(src, time_till_tail) / 10] seconds until you can do this!</span>")
+		return FALSE
+	if(hidden_accessory)
 		unhide_accessory(user)
 		COOLDOWN_START(src, time_till_tail, 3 MINUTES)
+		return FALSE
+	if(!user.wear_suit?.tuckable)
+		to_chat(user, "<span class='notice'>You cannot tuck your tail in those clothes!</span>")
 		return FALSE
 
 /datum/action/innate/hide_accessory/proc/unhide_accessory(mob/living/carbon/human/user)
 	if(!user.hidden_accessory)
 		return
-	user.tail = user.hidden_accessory
+	user.tail = hidden_accessory
 	user.hidden_accessory = null
+	user.body_accessory = body_accessory_hidden
 	user.update_tail_layer()
+	time_till_reveal = null
 
 /datum/action/innate/hide_accessory/tail
 
 /datum/action/innate/hide_accessory/tail/Activate()
 	. = ..()
 	var/mob/living/carbon/human/user = owner
-	if(!user.tail || !.)
+	if(!. || !user.tail)
 		return
 
 	to_chat(user, "You hide your tail.")
-	user.remove_overlay(TAIL_LAYER)
-	user.hidden_accessory = accessory_tag_to_hide
+	hidden_accessory = user.tail
 	user.tail = null
+	body_accessory_hidden = user.body_accessory
+	user.body_accessory = null
+	user.update_tail_layer()
+	time_till_reveal = addtimer(CALLBACK(PROC_REF(forceful_unhide)), 20 MINUTES, TIMER_STOPPABLE)
 	COOLDOWN_START(src, time_till_tail, 3 MINUTES)
 
 /datum/action/innate/hide_accessory/wing
+	name = "Hide wings"
+	desc = "Hide your wings under your suit!"
+	button_icon_state = "wing"
 
 /datum/action/innate/hide_accessory/wing/Activate()
 	. = ..()
 	var/mob/living/carbon/human/user = owner
 	if(!. || !user.wing)
 		return
+
+	to_chat(user, "You hide your wings.")
+	hidden_accessory = user.wing
+	user.wing = null
+	body_accessory_hidden = user.body_accessory
+	user.body_accessory = null
+	user.update_wing_layer()
+	time_till_reveal = addtimer(CALLBACK(PROC_REF(forceful_unhide)), 20 MINUTES, TIMER_STOPPABLE)
+	COOLDOWN_START(src, time_till_tail, 3 MINUTES)
 
 /datum/action/innate/hide_accessory/wing/unhide_accessory()
 	return
