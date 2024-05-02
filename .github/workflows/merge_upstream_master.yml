@@ -7,7 +7,7 @@ jobs:
   merge-upstream:
     if: |
       github.event.issue.pull_request &&
-      (github.event.comment.body == '!merge_upstream') &&
+      ((github.event.comment.body == '!merge_upstream') || (github.event.comment.body == '!merge_master')) &&
       ((github.event.sender.id == github.event.issue.user.id) ||
       (github.event.comment.author_association == 'COLLABORATOR') ||
       (github.event.comment.author_association == 'MEMBER') ||
