@@ -18,7 +18,7 @@
 	icon_state = "void-red"
 	item_state = "void"
 	desc = "A high tech, NASA Centcom branch designed space suit. Used for AI satellite maintenance."
-	allowed = list(/obj/item/flashlight,/obj/item/tank/internals,/obj/item/multitool)
+	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/multitool)
 	sprite_sheets = list(
 		"Tajaran" = 'icons/mob/clothing/species/tajaran/suit.dmi',
 		"Unathi" = 'icons/mob/clothing/species/unathi/suit.dmi',
@@ -57,15 +57,15 @@
 	icon_state = "void-light_blue"
 
 
-//Captian's Suit, like the other captian's suit, but looks better, at the cost of armor
+// Captain's Suit, like the other captain's suit, but looks better, at the cost of armor
 /obj/item/clothing/head/helmet/space/nasavoid/captain
 	name = "fancy retro void helmet"
-	icon_state = "void-captian"
+	icon_state = "void-captain"
 	desc = "A high tech, NASA Centcom branch designed space suit helmet. Used for AI satellite maintenance. This one is fit for a captain."
 
 /obj/item/clothing/suit/space/nasavoid/captain
 	name = "fancy NASA void suit"
-	icon_state = "void-captian"
+	icon_state = "void-captain"
 	desc = "A high tech, NASA Centcom branch designed space suit. Used for AI satellite maintenance. This one is fit for a captain."
 
 //Syndi's suit, on par with a blood red softsuit
