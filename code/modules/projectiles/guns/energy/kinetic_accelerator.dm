@@ -262,8 +262,15 @@
 		if(is_ancient_rock(target_turf))
 			visible_message("<span class='notice'>This rock appears to be resistant to all mining tools except pickaxes!</span>")
 		else
+			message_admins("Yes")
+			var/x_component_smoke = sin(Angle) * -15
+			var/y_component_smoke = cos(Angle) * -15
+			var/obj/effect/abstract/particle_holder/smoke_visuals = new(target, /particles/impact_smoke)
+			smoke_visuals.particles.velocity = list(x_component_smoke, y_component_smoke)
+
 			var/turf/simulated/mineral/M = target_turf
 			M.gets_drilled(firer)
+
 	var/obj/effect/temp_visual/kinetic_blast/K = new /obj/effect/temp_visual/kinetic_blast(target_turf)
 	K.color = color
 
