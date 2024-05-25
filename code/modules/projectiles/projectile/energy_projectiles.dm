@@ -122,14 +122,29 @@
 	damage = 12.5
 	damage_type = BURN
 
-/obj/item/projectile/energy/charged_plasma
+/obj/item/projectile/homing/charged_plasma
 	name = "charged plasma bolt"
 	icon_state = "plasma_heavy"
 	damage = 45
 	damage_type = BURN
+	flag = "energy"
 	armour_penetration_flat = 10 // It can have a little armor pen, as a treat. Bigger than it looks, energy armor is often low.
 	shield_buster = TRUE
 	reflectability = REFLECTABILITY_PHYSICAL //I will let eswords block it like a normal projectile, but it's not getting reflected, and eshields will take the hit hard. Carp still can reflect though, screw you.
+	var/reached_target = FALSE
+
+/obj/item/projectile/homing/charged_plasma/pixel_move(trajectory_multiplier)
+	homing_active = FALSE
+	if(reached_target || get_turf(original) == get_turf(src))
+		reached_target = TRUE
+		return ..()
+	var/fake_Angle = Angle
+	if(fake_Angle < 0)
+		fake_Angle += 360
+	if(abs(get_angle(get_turf(src), original) - fake_Angle) > 45)
+		return ..()
+	homing_active = TRUE
+	..()
 
 /obj/item/projectile/energy/arc_revolver
 	name = "arc emitter"
