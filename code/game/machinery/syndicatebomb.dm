@@ -14,8 +14,8 @@
 	flags_2 = CRITICAL_ATOM_2
 
 	var/datum/wires/syndicatebomb/wires = null
-	var/minimum_timer = 90
-	var/timer_set = 90
+	var/minimum_timer = 60
+	var/timer_set = 60
 	var/maximum_timer = 60000
 
 	var/can_unanchor = TRUE
