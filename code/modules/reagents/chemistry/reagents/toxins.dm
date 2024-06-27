@@ -1182,12 +1182,19 @@
 		fakerevive(M)
 	else if(!HAS_TRAIT(M, TRAIT_FAKEDEATH) && M.resting)
 		fakedeath(M)
+	RegisterSignal(M, COMSIG_MOB_DEATH, PROC_REF(remove_fake_death))
 	return ..()
 
 /datum/reagent/capulettium_plus/on_mob_delete(mob/living/M)
 	if(HAS_TRAIT(M, TRAIT_FAKEDEATH))
 		fakerevive(M)
+	UnregisterSignal(M, COMSIG_MOB_DEATH)
 	..()
+
+/datum/reagent/capulettium_plus/proc/remove_fake_death()
+	if(isliving(holder.my_atom)) // Sanity checking
+		UnregisterSignal(holder.my_atom, COMSIG_MOB_DEATH)
+		REMOVE_TRAIT(holder.my_atom, TRAIT_FAKEDEATH, id)
 
 /datum/reagent/toxic_slurry
 	name = "Toxic Slurry"
