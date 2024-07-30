@@ -25,80 +25,115 @@
 	return ..()
 
 /obj/structure/engineeringcart/proc/put_in_cart(obj/item/I, mob/user)
-	user.drop_item()
-	I.loc = src
+	I.forceMove(src)
 	to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 	return
 
 /obj/structure/engineeringcart/attackby(obj/item/I, mob/user, params)
 	var/fail_msg = "<span class='notice'>There is already one of those in [src].</span>"
-	if(!I.is_robot_module())
-		if(istype(I, /obj/item/stack/sheet/glass))
-			if(!myglass)
-				put_in_cart(I, user)
-				myglass=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/stack/sheet/metal))
-			if(!mymetal)
-				put_in_cart(I, user)
-				mymetal=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/stack/sheet/plasteel))
-			if(!myplasteel)
-				put_in_cart(I, user)
-				myplasteel=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/flashlight))
-			if(!myflashlight)
-				put_in_cart(I, user)
-				myflashlight=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/storage/toolbox/mechanical))
-			if(!mybluetoolbox)
-				put_in_cart(I, user)
-				mybluetoolbox=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/storage/toolbox/electrical))
-			if(!myyellowtoolbox)
-				put_in_cart(I, user)
-				myyellowtoolbox=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/storage/toolbox))
-			if(!myredtoolbox)
-				put_in_cart(I, user)
-				myredtoolbox=I
-				update_icon(UPDATE_OVERLAYS)
-			else
-				to_chat(user, fail_msg)
-		else if(istype(I, /obj/item/wrench))
-			if(!anchored && !isinspace())
-				playsound(src.loc, I.usesound, 50, 1)
-				user.visible_message( \
-					"[user] tightens \the [src]'s casters.", \
-					"<span class='notice'> You have tightened \the [src]'s casters.</span>", \
-					"You hear ratchet.")
-				anchored = TRUE
-			else if(anchored)
-				playsound(src.loc, I.usesound, 50, 1)
-				user.visible_message( \
-					"[user] loosens \the [src]'s casters.", \
-					"<span class='notice'> You have loosened \the [src]'s casters.</span>", \
-					"You hear ratchet.")
-				anchored = FALSE
-	else
-		to_chat(usr, "<span class='warning'>You cannot interface your modules [src]!</span>")
+	if(I.is_robot_module())
+		to_chat(user, "<span class='warning'>You cannot interface your modules [src]!</span>")
+		return
+
+	if(istype(I, /obj/item/stack/sheet/glass))
+		if(!myglass)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			myglass = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/stack/sheet/metal))
+		if(!mymetal)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			mymetal = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+
+	if(istype(I, /obj/item/stack/sheet/plasteel))
+		if(!myplasteel)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			myplasteel = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/flashlight))
+		if(!myflashlight)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			myflashlight = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/storage/toolbox/mechanical))
+		if(!mybluetoolbox)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			mybluetoolbox = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/storage/toolbox/electrical))
+		if(!myyellowtoolbox)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			myyellowtoolbox = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/storage/toolbox))
+		if(!myredtoolbox)
+			if(!user.unEquip(I))
+				to_chat(user, "<span class='notice'>[I] is stuck to your hand!")
+				return
+			put_in_cart(I, user)
+			myredtoolbox = I
+			update_icon(UPDATE_OVERLAYS)
+		else
+			to_chat(user, fail_msg)
+		return
+
+	if(istype(I, /obj/item/wrench))
+		if(!anchored && !isinspace())
+			playsound(src, I.usesound, 50, TRUE)
+			user.visible_message( \
+				"[user] tightens [src]'s casters.", \
+				"<span class='notice'> You have tightened [src]'s casters.</span>", \
+				"You hear ratchet.")
+			anchored = TRUE
+		else if(anchored)
+			playsound(src, I.usesound, 50, TRUE)
+			user.visible_message( \
+				"[user] loosens [src]'s casters.", \
+				"<span class='notice'> You have loosened [src]'s casters.</span>", \
+				"You hear ratchet.")
+			anchored = FALSE
+		return
 
 /obj/structure/engineeringcart/attack_hand(mob/user)
 	var/list/engicart_items = list()
