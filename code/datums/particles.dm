@@ -125,3 +125,24 @@
 	scale = generator("vector", list(0.3, 0.3), list(1,1), NORMAL_RAND)
 	rotation = 30
 	spin = generator("num", -20, 20)
+
+/*
+  * MARK: Fire effects
+  */
+
+/particles/fire
+	icon = 'icons/effects/fire.dmi'
+	icon_state = list("fire_1" = 1, "fire_2" = 1, "fire_3" = 1, "fire_4" = 1)
+	width = 64
+	height = 128
+	count = 600
+	spawning = 30
+	lifespan = generator(GEN_NUM, 12, 18)
+	fade = generator(GEN_NUM, 60, 80)
+	grow = -0.01
+	velocity = generator(GEN_CIRCLE, 0.25, 0.25)
+	position = generator(GEN_CIRCLE, 21, 0)
+	drift = generator(GEN_CIRCLE, 0.1, 0)
+	gravity = list(0, 0.3)
+	scale = generator(GEN_NUM, 0.35, 0.3)
+	friction = 0.01

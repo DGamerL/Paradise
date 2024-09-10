@@ -4,9 +4,8 @@ GLOBAL_LIST_EMPTY(flame_effects)
 /obj/effect/fire
 	name = "fire"
 	desc = "You don't think you should touch this."
-	icon = 'icons/effects/chemical_fire.dmi'
-	icon_state = "fire1"
-
+	icon = null
+	layer = BELOW_OBJ_LAYER
 	/// How hot is our fire?
 	var/temperature
 	/// How long will our fire last
@@ -20,6 +19,9 @@ GLOBAL_LIST_EMPTY(flame_effects)
 	if(reagent_duration < 0 || reagent_temperature <= 0) // There is no reason for this thing to exist
 		qdel(src)
 		return
+
+	particles = new /particles/fire
+	add_filter("fire", 3, outline_filter(0.2, COLOR_RED))
 
 	duration = reagent_duration
 	temperature = reagent_temperature
