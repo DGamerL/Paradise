@@ -24,7 +24,7 @@
 		return
 	if(isobj(A) && can_plant(A))
 		if(bomb_cooldown <= world.time && stat == CONSCIOUS)
-			var/obj/item/guardian_bomb/B = new /obj/item/guardian_bomb(get_turf(A))
+			var/obj/guardian_bomb/B = new /obj/guardian_bomb(get_turf(A))
 			add_attack_logs(src, A, "booby trapped (summoner: [summoner])")
 			to_chat(src, "<span class='danger'>Success! Bomb on [A] armed!</span>")
 			if(summoner)
@@ -46,13 +46,13 @@
 		return FALSE
 	return TRUE
 
-/obj/item/guardian_bomb
+/obj/guardian_bomb
 	name = "bomb"
 	desc = "You shouldn't be seeing this!"
 	var/obj/stored_obj
 	var/mob/living/spawner
 
-/obj/item/guardian_bomb/proc/disguise(obj/A)
+/obj/guardian_bomb/proc/disguise(obj/A)
 	A.forceMove(src)
 	stored_obj = A
 	opacity = A.opacity
@@ -61,16 +61,16 @@
 	appearance = A.appearance
 	dir = A.dir
 	move_resist = A.move_resist
-	addtimer(CALLBACK(src, PROC_REF(disable)), 600)
+	addtimer(CALLBACK(src, PROC_REF(disable)), 60 SECONDS)
 
-/obj/item/guardian_bomb/proc/disable()
+/obj/guardian_bomb/proc/disable()
 	add_attack_logs(null, stored_obj, "booby trap expired")
 	stored_obj.forceMove(get_turf(src))
 	if(spawner)
 		to_chat(spawner, "<span class='danger'>Failure! Your trap on [stored_obj] didn't catch anyone this time.</span>")
 	qdel(src)
 
-/obj/item/guardian_bomb/proc/detonate(mob/living/user)
+/obj/guardian_bomb/proc/detonate(mob/living/user)
 	if(!istype(user))
 		return
 	to_chat(user, "<span class='danger'>[src] was boobytrapped!</span>")
@@ -90,28 +90,32 @@
 	user.Stun(3 SECONDS)//A bomb went off in your hands. Actually lets people follow up with it if they bait someone, right now it is unreliable.
 	qdel(src)
 
-/obj/item/guardian_bomb/attackby(obj/item/W, mob/living/user)
+/obj/guardian_bomb/CanPass(atom/movable/mover, turf/target)
+	message_admins(stored_obj.CanPass(mover, target))
+	return stored_obj.CanPass(mover, target)
+
+/obj/guardian_bomb/attackby(obj/item/W, mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/attack_hand(mob/user)
+/obj/guardian_bomb/attack_hand(mob/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/MouseDrop_T(obj/item/I, mob/living/user)
+/obj/guardian_bomb/MouseDrop_T(obj/item/I, mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/AltClick(mob/living/user)
+/obj/guardian_bomb/AltClick(mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/MouseDrop(mob/living/user)
+/obj/guardian_bomb/MouseDrop(mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/Bumped(mob/living/user)
+/obj/guardian_bomb/Bumped(mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/can_be_pulled(mob/living/user)
+/obj/guardian_bomb/can_be_pulled(mob/living/user)
 	detonate(user)
 
-/obj/item/guardian_bomb/examine(mob/user)
+/obj/guardian_bomb/examine(mob/user)
 	. = stored_obj.examine(user)
 	if(get_dist(user, src) <= 2)
 		. += "<span class='notice'>Looks odd!</span>"
