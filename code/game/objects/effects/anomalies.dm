@@ -13,9 +13,8 @@
 	var/movechance = ANOMALY_MOVECHANCE
 	var/obj/item/assembly/signaler/anomaly/aSignal = /obj/item/assembly/signaler/anomaly
 	var/area/impact_area
-	/// Time in deciseconds before the anomaly triggers
-	var/lifespan = 990
-	var/death_time
+	/// After how long will the anomaly detonate
+	var/lifespan = 100 SECONDS
 
 	var/countdown_colour
 	var/obj/effect/countdown/anomaly/countdown
@@ -45,7 +44,7 @@
 
 	if(new_lifespan)
 		lifespan = new_lifespan
-	death_time = world.time + lifespan
+
 	countdown = new(src)
 	if(countdown_colour)
 		countdown.color = countdown_colour
@@ -60,17 +59,17 @@
 
 /obj/effect/anomaly/process()
 	anomalyEffect()
-	if(death_time < world.time)
-		if(loc)
-			detonate()
-		qdel(src)
+	lifespan -= 2 SECONDS
+	if(lifespan <= 0)
+		detonate()
 
 /obj/effect/anomaly/proc/anomalyEffect()
 	if(prob(movechance))
 		step(src, pick(GLOB.alldirs))
 
 /obj/effect/anomaly/proc/detonate()
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	qdel(src)
 
 /obj/effect/anomaly/ex_act(severity)
 	if(severity == EXPLODE_DEVASTATE)
@@ -169,6 +168,7 @@
 	if(T && length(GLOB.gravity_generators["[T.z]"]))
 		var/obj/machinery/gravity_generator/main/G = pick(GLOB.gravity_generators["[T.z]"])
 		G.set_broken() //Requires engineering to fix the gravity generator, as it gets overloaded by the anomaly.
+	return ..()
 
 /////////////////////
 
@@ -225,6 +225,7 @@
 		explosion(src, 1, 4, 16, 18) //Low devastation, but hits a lot of stuff.
 	else
 		new /obj/effect/particle_effect/sparks(loc)
+	return ..()
 
 /////////////////////
 
@@ -314,6 +315,7 @@
 					var/mob/M = A
 					if(M.client)
 						INVOKE_ASYNC(src, PROC_REF(blue_effect), M)
+	return ..()
 
 /obj/effect/anomaly/bluespace/proc/blue_effect(mob/M)
 	var/obj/blueeffect = new /obj(src)
@@ -365,6 +367,7 @@
 /obj/effect/anomaly/pyro/detonate()
 	if(produces_slime)
 		INVOKE_ASYNC(src, PROC_REF(makepyroslime))
+	return ..()
 
 /obj/effect/anomaly/pyro/proc/makepyroslime()
 	var/turf/simulated/T = get_turf(src)
@@ -466,6 +469,7 @@
 		air.set_sleeping_agent(3000)
 		air.set_carbon_dioxide(3000)
 		T.blind_release_air(air)
+	return ..()
 
 /////////////////////
 

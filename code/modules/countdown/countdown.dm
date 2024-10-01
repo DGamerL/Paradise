@@ -114,5 +114,5 @@
 	var/obj/effect/anomaly/A = attached_to
 	if(!istype(A))
 		return
-	var/time_left = max(0, (A.death_time - world.time) / 10)
+	var/time_left = max(0, (A.lifespan / initial(A.lifespan)) * 100)
 	return round(time_left)
