@@ -804,14 +804,13 @@
 	dna.check_integrity(src)
 
 /mob/living/carbon/human/proc/play_xylophone()
-	if(!src.xylophone)
-		visible_message("<span class='warning'>[src] begins playing [p_their()] ribcage like a xylophone. It's quite spooky.</span>","<span class='notice'>You begin to play a spooky refrain on your ribcage.</span>","<span class='warning'>You hear a spooky xylophone melody.</span>")
-		var/song = pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg')
-		playsound(loc, song, 50, TRUE, -1)
-		xylophone = 1
-		spawn(1200)
-			xylophone=0
-	return
+	if(!can_xylophone)
+		return
+	visible_message("<span class='warning'>[src] begins playing [p_their()] ribcage like a xylophone. It's quite spooky.</span>","<span class='notice'>You begin to play a spooky refrain on your ribcage.</span>","<span class='warning'>You hear a spooky xylophone melody.</span>")
+	var/song = pick('sound/effects/xylophone1.ogg', 'sound/effects/xylophone2.ogg', 'sound/effects/xylophone3.ogg')
+	playsound(loc, song, 50, TRUE, -1)
+	can_xylophone = FALSE
+	addtimer(VARSET_CALLBACK(src, can_xylophone, TRUE), 2 MINUTES)
 
 /mob/living/carbon/human/can_inject(mob/user, error_msg, target_zone, penetrate_thick = FALSE, piercing = FALSE)
 	. = TRUE
