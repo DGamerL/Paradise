@@ -440,12 +440,12 @@
 
 /obj/machinery/camera/fake
 	icon_state = "camera_base"
-	var/obj/effect/overlay/camera_head/camera_overlay
+	var/obj/effect/camera_head/camera_overlay
 
 /obj/machinery/camera/fake/Initialize(mapload, should_add_to_cameranet)
 	. = ..()
 	AddComponent(/datum/component/proximity_monitor, _radius = 3)
-	camera_overlay = new()
+	camera_overlay = new(get_turf(src))
 	switch(dir)
 		if(NORTH)
 			camera_overlay.pixel_x = 2
@@ -477,17 +477,16 @@
 	return
 
 /obj/machinery/camera/fake/update_overlays()
-	cut_overlays()
-	return list(camera_overlay)
+	return
 
 /obj/machinery/camera/fake/HasProximity(atom/movable/AM)
 	if(!isliving(AM))
 		return
 
 	camera_overlay.dir = get_dir(src, AM)
-	camera_overlay.update_icon()
 	update_icon(UPDATE_OVERLAYS)
 
-/obj/effect/overlay/camera_head
+/obj/effect/camera_head
 	icon = 'icons/obj/followingcamera.dmi'
 	icon_state = "camera_head"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
