@@ -440,13 +440,12 @@
 
 /obj/machinery/camera/fake
 	icon_state = "camera_base"
-	var/mutable_appearance/camera_overlay
-	var/current_angle
+	var/obj/effect/overlay/camera_head/camera_overlay
 
 /obj/machinery/camera/fake/Initialize(mapload, should_add_to_cameranet)
 	. = ..()
 	AddComponent(/datum/component/proximity_monitor, _radius = 3)
-	camera_overlay = mutable_appearance('icons/obj/followingcamera.dmi', "camera_head")
+	camera_overlay = new()
 	switch(dir)
 		if(NORTH)
 			camera_overlay.pixel_x = 2
@@ -454,7 +453,7 @@
 
 		if(EAST)
 			camera_overlay.pixel_x = 6
-			camera_overlay.pixel_y = 20
+			camera_overlay.pixel_y = 23
 
 		if(SOUTH)
 			camera_overlay.pixel_x = 1
@@ -462,10 +461,9 @@
 
 		if(WEST)
 			camera_overlay.pixel_x = 20
-			camera_overlay.pixel_y = 20
+			camera_overlay.pixel_y = 23
 
-	if(current_angle)
-		camera_overlay.transform = camera_overlay.transform.Turn(current_angle)
+	camera_overlay.dir = dir
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/machinery/camera/fake/Destroy()
@@ -487,4 +485,9 @@
 		return
 
 	camera_overlay.dir = get_dir(src, AM)
+	camera_overlay.update_icon()
 	update_icon(UPDATE_OVERLAYS)
+
+/obj/effect/overlay/camera_head
+	icon = 'icons/obj/followingcamera.dmi'
+	icon_state = "camera_head"
