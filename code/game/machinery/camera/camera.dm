@@ -437,3 +437,43 @@
 	SEND_SIGNAL(src, COMSIG_CAMERA_MOVED, prev_turf)
 	GLOB.cameranet.updatePortableCamera(src, prev_turf)
 	prev_turf = get_turf(src)
+
+/obj/machinery/camera/fake
+	icon_state = "camera_base"
+	var/mutable_appearance/camera_overlay
+	var/current_angle
+
+/obj/machinery/camera/fake/Initialize(mapload, should_add_to_cameranet)
+	. = ..()
+	AddComponent(/datum/component/proximity_monitor, _radius = 3)
+	camera_overlay = mutable_appearance('icons/obj/monitors.dmi', "camera_head")
+	switch(dir)
+		if(NORTH)
+			current_angle = 0
+		if(EAST)
+			current_angle = 90
+		if(SOUTH)
+			current_angle = 180
+		if(WEST)
+			current_angle = 270
+	if(current_angle)
+		camera_overlay.transform = camera_overlay.transform.Turn(current_angle)
+	update_icon(UPDATE_OVERLAYS)
+
+/obj/machinery/camera/fake/process()
+	return PROCESS_KILL
+
+/obj/machinery/camera/fake/update_icon_state()
+	return
+
+/obj/machinery/camera/fake/update_overlays()
+	return list(camera_overlay)
+
+/obj/machinery/camera/fake/HasProximity(atom/movable/AM)
+	if(!isliving(AM))
+		return
+
+	var/angle = get_angle(src, AM)
+	var/how_much_turning = current_angle - angle
+	camera_overlay.transform = camera_overlay.transform.Turn(how_much_turning)
+	current_angle = angle

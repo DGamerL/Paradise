@@ -17269,6 +17269,9 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
+/obj/machinery/camera/fake{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/entry)
 "bdo" = (
@@ -81845,6 +81848,12 @@
 	icon_state = "purple"
 	},
 /area/station/maintenance/asmaint2)
+"soV" = (
+/obj/machinery/camera/fake{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel,
+/area/station/hallway/secondary/entry)
 "soX" = (
 /obj/structure/sign/poster/contraband/random{
 	pixel_y = 32
@@ -106518,7 +106527,7 @@ aZN
 bcW
 bgl
 bhK
-aSf
+soV
 blg
 aSf
 bqf
