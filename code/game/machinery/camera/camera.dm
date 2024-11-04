@@ -446,19 +446,31 @@
 /obj/machinery/camera/fake/Initialize(mapload, should_add_to_cameranet)
 	. = ..()
 	AddComponent(/datum/component/proximity_monitor, _radius = 3)
-	camera_overlay = mutable_appearance('icons/obj/monitors.dmi', "camera_head")
+	camera_overlay = mutable_appearance('icons/obj/followingcamera.dmi', "camera_head")
 	switch(dir)
 		if(NORTH)
-			current_angle = 0
+			camera_overlay.pixel_x = 2
+			camera_overlay.pixel_y = 6
+
 		if(EAST)
-			current_angle = 90
+			camera_overlay.pixel_x = 6
+			camera_overlay.pixel_y = 20
+
 		if(SOUTH)
-			current_angle = 180
+			camera_overlay.pixel_x = 1
+			camera_overlay.pixel_y = 20
+
 		if(WEST)
-			current_angle = 270
+			camera_overlay.pixel_x = 20
+			camera_overlay.pixel_y = 20
+
 	if(current_angle)
 		camera_overlay.transform = camera_overlay.transform.Turn(current_angle)
 	update_icon(UPDATE_OVERLAYS)
+
+/obj/machinery/camera/fake/Destroy()
+	. = ..()
+	QDEL_NULL(camera_overlay)
 
 /obj/machinery/camera/fake/process()
 	return PROCESS_KILL
@@ -467,13 +479,12 @@
 	return
 
 /obj/machinery/camera/fake/update_overlays()
+	cut_overlays()
 	return list(camera_overlay)
 
 /obj/machinery/camera/fake/HasProximity(atom/movable/AM)
 	if(!isliving(AM))
 		return
 
-	var/angle = get_angle(src, AM)
-	var/how_much_turning = current_angle - angle
-	camera_overlay.transform = camera_overlay.transform.Turn(how_much_turning)
-	current_angle = angle
+	camera_overlay.dir = get_dir(src, AM)
+	update_icon(UPDATE_OVERLAYS)
