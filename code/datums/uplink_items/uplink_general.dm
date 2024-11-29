@@ -705,8 +705,17 @@ GLOBAL_LIST_INIT(uplink_items, subtypesof(/datum/uplink_item))
 	desc = "A key, that when inserted into a radio headset, allows you to listen to all station department channels as well as talk on an encrypted Syndicate channel."
 	reference = "SEK"
 	item = /obj/item/encryptionkey/syndicate
-	cost = 10 //Nowhere near as useful as the Binary Key!
+	cost = 7 // Nowhere near as useful as the Binary Key!
 	surplus = 75
+
+/datum/uplink_item/device_tools/cipherkey/free
+	name = "Syndicate Channel Encryption Key"
+	desc = "A key, that when inserted into a radio headset, allows you to listen to all station department channels as well as talk on an encrypted Syndicate channel. One per uplink."
+	reference = "SEKF"
+	item = /obj/item/encryptionkey/syndicate/single
+	limited_stock = 1
+	cost = 0
+	surplus = 0
 
 /datum/uplink_item/device_tools/hacked_module
 	name = "Hacked AI Upload Module"

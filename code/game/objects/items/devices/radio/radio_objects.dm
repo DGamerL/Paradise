@@ -436,8 +436,9 @@ GLOBAL_LIST_EMPTY(deadsay_radio_systems)
 		if(H.voice != M.real_name)
 			voicemask = TRUE
 
-	if(syndiekey && syndiekey.change_voice && connection.frequency == SYND_FREQ)
-		displayname = syndiekey.fake_name
+	var/obj/item/encryptionkey/syndicate/syndicate_key = check_syndicate_comm_access()
+	if(syndicate_key && syndicate_key.change_voice && connection.frequency == SYND_FREQ)
+		displayname = syndicate_key.fake_name
 		jobname = "Unknown"
 		rankname = "Unknown"
 		voicemask = TRUE
@@ -517,7 +518,7 @@ GLOBAL_LIST_EMPTY(deadsay_radio_systems)
 		if(!position || !(position.z in level))
 			return -1
 	if(freq in SSradio.ANTAG_FREQS)
-		if(!(syndiekey))//Checks to see if it's allowed on that frequency, based on the encryption keys
+		if(!check_syndicate_comm_access())//Checks to see if it's allowed on that frequency, based on the encryption keys
 			return -1
 	if(!freq) //received on main frequency
 		if(!listening)
@@ -826,3 +827,17 @@ GLOBAL_LIST_EMPTY(deadsay_radio_systems)
 		return
 
 	return M.say_dead(message)
+
+/// Checks if we have access to syndicate comms
+/// Returns the key that gives access
+/obj/item/radio/proc/check_syndicate_comm_access()
+	return syndiekey
+
+/obj/item/radio/headset/check_syndicate_comm_access()
+	if(syndiekey)
+		return keyslot1
+	if(keyslot1?.syndie_commms_access)
+		return keyslot1
+	if(keyslot2?.syndie_commms_access)
+		return keyslot1
+	return FALSE

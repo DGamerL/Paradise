@@ -12,6 +12,8 @@
 	var/syndie = FALSE
 	var/change_voice = FALSE
 	var/list/channels = list()
+	/// Can we listen to syndicate communications?
+	var/syndie_commms_access = FALSE
 
 /obj/item/encryptionkey/syndicate
 	name = "syndicate encryption key"
@@ -29,6 +31,11 @@
 	. = ..()
 	if(change_voice)
 		fake_name = "Agent [pick_n_take(fakename_list)]"
+
+/obj/item/encryptionkey/syndicate/single
+	name = "syndicate channel encryption key"
+	syndie = FALSE // Only for syndicate channel
+	syndie_commms_access = TRUE
 
 /obj/item/encryptionkey/syndicate/nukeops
 	change_voice = FALSE
