@@ -241,6 +241,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EMP_IMMUNE "emp_immune" //The mob will take no damage from EMPs
 #define TRAIT_EMP_RESIST "emp_resist" //The mob will take less damage from EMPs
 #define TRAIT_MINDFLAYER_NULLIFIED "flayer_nullified" //The mindflayer will not be able to activate their abilities, or drain swarms from people
+#define TRAIT_CLING_NULLIFIED "cling_nullified" // The changeling will not be able to activate most of their abilities
 #define TRAIT_FLYING "flying"
 
 //***** MIND TRAITS *****/

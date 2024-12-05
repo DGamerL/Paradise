@@ -981,6 +981,22 @@
 	REMOVE_TRAIT(M, TRAIT_MINDFLAYER_NULLIFIED, UNIQUE_TRAIT_SOURCE(src))
 	return ..()
 
+/obj/item/organ/internal/cyberimp/chest/changeling_suppressor
+	name = "changeling suppressor"
+	desc = "This implant will suppress a changeling's internal functions, reducing them to appear almost human."
+	implant_color = COLOR_YELLOW
+	origin_tech = "materials=4;programming=4;biotech=5;combat=4;"
+
+/obj/item/organ/internal/cyberimp/chest/changeling_suppressor/insert(mob/living/carbon/M, special, dont_remove_slot)
+	. = ..()
+	ADD_TRAIT(M, TRAIT_CHANGELING_NULLIFIED, UNIQUE_TRAIT_SOURCE(src))
+	SEND_SIGNAL(M, COMSIG_CLING_RETRACT_IMPLANTS, TRUE)
+
+/obj/item/organ/internal/cyberimp/chest/changeling_suppressor/remove(mob/living/carbon/M, special)
+	. = ..()
+	REMOVE_TRAIT(M, TRAIT_CLING_NULLIFIED, UNIQUE_TRAIT_SOURCE(src))
+
+
 //BOX O' IMPLANTS
 
 /obj/item/storage/box/cyber_implants

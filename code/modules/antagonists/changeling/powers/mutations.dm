@@ -129,7 +129,7 @@
 	weapon_type = /obj/item/melee/arm_blade
 	weapon_name_simple = "blade"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	recharge_slowdown = 0.75
+	recharge_slowdown = 1
 	category = /datum/changeling_power_category/offence
 
 /obj/item/melee/arm_blade
@@ -405,6 +405,7 @@
 	weapon_type = /obj/item/shield/changeling
 	weapon_name_simple = "shield"
 	power_type = CHANGELING_PURCHASABLE_POWER
+	recharge_slowdown = 1
 	category = /datum/changeling_power_category/defence
 
 /datum/action/changeling/weapon/shield/sting_action(mob/user)
