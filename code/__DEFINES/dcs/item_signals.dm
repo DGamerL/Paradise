@@ -116,3 +116,7 @@
 #define COMSIG_SPEED_POTION_APPLIED "speed_potion"
 	#define SPEED_POTION_STOP (1<<0)
 
+
+// Organs are technically items
+/// Called when an organ is delimbed
+#define COMSIG_ORGAN_DELIMBED	"delimbed_organ"

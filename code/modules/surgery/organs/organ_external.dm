@@ -649,6 +649,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	switch(disintegrate)
 		if(DROPLIMB_SHARP)
+			SEND_SIGNAL(victim, COMSIG_ORGAN_DELIMBED, limb_name)
 			compile_icon()
 			add_blood(victim.blood_DNA, victim.dna.species.blood_color)
 			var/matrix/M = matrix()

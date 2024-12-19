@@ -9,6 +9,10 @@
 	var/weapon_type
 	/// Reference to the weapon itself, set on create_new_weapon
 	var/obj/item/weapon_ref
+	/// We retract when one of these organs is delimbed, and we are in the left hand
+	var/list/l_hand_droplist = list("l_hand", "l_arm")
+	/// We retract when one of these organs is delimbed, and we are in the right hand
+	var/list/r_hand_droplist = list("r_hand", "r_arm")
 
 /datum/spell/flayer/self/weapon/New()
 	. = ..()
@@ -45,8 +49,9 @@
 	SEND_SIGNAL(user, COMSIG_MOB_WEAPON_APPEARS)
 	user.put_in_hands(weapon_ref)
 	playsound(get_turf(user), 'sound/mecha/mechmove03.ogg', 25, TRUE, ignore_walls = FALSE)
-	RegisterSignal(user, COMSIG_MOB_WILLINGLY_DROP, PROC_REF(retract), user)
-	RegisterSignal(user, COMSIG_FLAYER_RETRACT_IMPLANTS, PROC_REF(retract), user)
+	RegisterSignal(user, COMSIG_MOB_WILLINGLY_DROP, PROC_REF(retract))
+	RegisterSignal(user, COMSIG_FLAYER_RETRACT_IMPLANTS, PROC_REF(retract))
+	RegisterSignal(user, COMSIG_ORGAN_DELIMBED, PROC_REF(on_drop_limb))
 	return weapon_ref
 
 /datum/spell/flayer/self/weapon/proc/retract(mob/owner, any_hand = FALSE)
@@ -60,6 +65,13 @@
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 25, TRUE, ignore_walls = FALSE)
 	UnregisterSignal(owner, COMSIG_MOB_WILLINGLY_DROP)
 	UnregisterSignal(owner, COMSIG_FLAYER_RETRACT_IMPLANTS)
+
+/datum/spell/flayer/self/weapon/proc/on_drop_limb(mob/living/carbon/human/user, limb_type)
+	SIGNAL_HANDLER // COMSIG_ORGAN_DELIMBED
+	if(user.l_hand == weapon_ref && (limb_type in l_hand_droplist))
+		retract(user)
+	else if(user.r_hand == weapon_ref && (limb_type in r_hand_droplist))
+		retract(user)
 
 /**
 	START OF INDIVIDUAL WEAPONS
