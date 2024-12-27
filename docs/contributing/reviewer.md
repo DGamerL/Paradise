@@ -1,6 +1,7 @@
 # Reviewer Crash Course
 
 by _Sirryan_
+ - Later edited by _DGamerL_
 
 Hey everyone, I noticed some people were not sure how to approach reviewing PRs
 so I figured I would write up a small guide on PR reviewing and how people like
@@ -153,7 +154,7 @@ out for as a beginner code reviewer.
 		return
 
 /obj/item/omega/proc/is_user_cool(mob/user)
-	if(istype(usr, /mob/living/carbon/human))
+	if(issilicon(user) || istype(usr, /mob/living/carbon/human))
 		return 1
 	return 0
 ```
@@ -213,7 +214,7 @@ and also checking for the return of `is_user_cool()`
 
 ```dm
 /obj/item/omega/proc/is_user_cool(mob/user)
-	if(istype(usr, /mob/living/carbon/human))
+	if(issilicon(user) || istype(usr, /mob/living/carbon/human))
 		return 1
 	return 0
 ```
@@ -233,9 +234,16 @@ Lets make those corrections
 
 ```dm
 /obj/item/omega/proc/is_user_cool(mob/user)
-	if(ishuman(user))
+	if(issilicon(user) || ishuman(user))
 		return TRUE
 	return FALSE
+```
+
+We can also simplify this code even more by returning the result directly, which looks like this:
+
+```dm
+/obj/item/omega/proc/is_user_cool(mob/user)
+	return (issilicon(user) || ishuman(user))
 ```
 
 Now lets looks at the big picture, you may have noticed that we perform the same
@@ -244,6 +252,32 @@ code in their if check. Let's fix that for them:
 
 ```dm
 if(is_user_cool(user))
+```
+
+Another thing we can do here is make the first if-statement an early return
+(also commonly known as a guard clause). This will improve the readability of
+the proc and make it easier to see at a glance what is going on.
+
+```
+/obj/item/omega/attack_self(mob/user)
+	if(!user)
+		return
+	if(is_user_cool(user))
+		to_chat(user, "<span class='notice'>[user] is very [pick(announce_verbs)]</span>")
+		is_cool = TRUE
+		return
+	to_chat(user, "<span class='notice'>[user] is not very [pick(announce_verbs)]</span>")
+	is_cool = FALSE
+	return
+```
+
+Finally, it is good practice to use the `autodoc` style for any new variables you use
+or make. This will make the variable show its comment when you hover over it in the editor.
+The autodoc style is marked by the `///`, and it applies to the variable defined under it.
+
+```
+	/// Determines whether the person using this is "cool" or not
+	var/is_cool
 ```
 
 Lets put all of our suggested changes together!
@@ -256,32 +290,29 @@ Lets put all of our suggested changes together!
 	icon_state = "omega"
 	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
-	//determines whether the person using this is "cool" or not
+	/// Determines whether the person using this is "cool" or not
 	var/is_cool
 	var/list/announce_verbs = list(cool, epic, sick, spectacular)
 
 /obj/item/omega/attack_self(mob/user)
-	if(user)
-		if(is_user_cool(user))
-			to_chat(user, "<span class='notice'>[user] is very [pick(announce_verbs)]</span>")
-			is_cool = TRUE
-			return
-		to_chat(user, "<span class='notice'>[user] is not very [pick(announce_verbs)]</span>")
-		is_cool = FALSE
+	if(!user)
 		return
+	if(is_user_cool(user))
+		to_chat(user, "<span class='notice'>[user] is very [pick(announce_verbs)]</span>")
+		is_cool = TRUE
+		return
+	to_chat(user, "<span class='notice'>[user] is not very [pick(announce_verbs)]</span>")
+	is_cool = FALSE
+	return
 
 /obj/item/omega/proc/is_user_cool(mob/user)
-	if(ishuman(user))
-		return TRUE
-	return FALSE
+	return (issilicon(user) || ishuman(user))
 ```
 
 That code looks a lot better, it's not perfect and it may not be "balanced" but
-the code is much cleaner and even less prone to failure. There is still 7 minor
-issues or possibly problematic code in this pull request that can be fixed (and
-one that will cause compile errors or runtimes!); **I invite you to look for
-them and share in the replies to this post what they are and how you would
-suggest to fix them as a PR reviewer.**
+the code is much cleaner and even less prone to failure. There are still a few minor
+issues or possibly problematic code in this pull request that can be fixed, and feel
+free to try and find them!
 
 ## The Art of Code
 
