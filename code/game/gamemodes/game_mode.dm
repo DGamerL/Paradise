@@ -44,7 +44,7 @@
 	var/list/datum/station_goal/secondary/secondary_goals = list() // A list of all secondary goals issued
 
 	/// Each item in this list can only be rolled once on average.
-	var/list/single_antag_positions = list("Head of Personnel", "Chief Engineer", "Research Director", "Chief Medical Officer", "Quartermaster")
+	var/list/single_antag_positions = list("Head of Personnel", "Chief Engineer", "Research Director", "Chief Medical Officer", "Quartermaster", "AI")
 
 	/// A list of all minds which have the traitor antag datum.
 	var/list/datum/mind/traitors = list()
