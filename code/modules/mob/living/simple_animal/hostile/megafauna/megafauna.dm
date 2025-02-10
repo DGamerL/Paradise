@@ -178,6 +178,9 @@
 	playsound(get_turf(src), 'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	cursed_board.necropolis_curse()
 
+/mob/living/simple_animal/hostile/megafauna/quick_explode_gib()
+	return FALSE
+
 /datum/action/innate/megafauna_attack
 	name = "Megafauna Attack"
 	button_overlay_icon = 'icons/mob/actions/actions_animal.dmi'
