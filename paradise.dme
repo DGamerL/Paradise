@@ -1171,6 +1171,7 @@
 #include "code\game\objects\effects\decals\contraband_posters.dm"
 #include "code\game\objects\effects\decals\crayon.dm"
 #include "code\game\objects\effects\decals\misc_decals.dm"
+#include "code\game\objects\effects\decals\puddle.dm"
 #include "code\game\objects\effects\decals\remains.dm"
 #include "code\game\objects\effects\decals\turf_decal.dm"
 #include "code\game\objects\effects\decals\Cleanable\alien_blood.dm"
