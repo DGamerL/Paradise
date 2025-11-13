@@ -286,13 +286,21 @@
  * it will use the amount of the reagent that is available. If no reagent
  * exists, returns null.
  */
-/datum/reagents/proc/trans_id_to(obj/target, reagent, amount = 1, preserve_data = TRUE) //Not sure why this proc didn't exist before. It does now! /N
+/datum/reagents/proc/trans_id_to(datum/target, reagent, amount = 1, preserve_data = TRUE) //Not sure why this proc didn't exist before. It does now! /N
 	if(!target)
 		return
-	if(!target.reagents || total_volume <= 0 || !get_reagent_amount(reagent))
+	if(total_volume <= 0 || !get_reagent_amount(reagent))
 		return
 
-	var/datum/reagents/R = target.reagents
+	var/datum/reagents/R
+	if(isobj(target))
+		var/obj/temp = R
+		R = temp.reagents
+	else if(istype(target, /datum/reagents))
+		R = target
+	if(!R)
+		return
+
 	if(get_reagent_amount(reagent) < amount)
 		amount = get_reagent_amount(reagent)
 	amount = min(amount, R.maximum_volume - R.total_volume)
@@ -570,15 +578,14 @@
  */
 /datum/reagents/proc/del_reagent(reagent)
 	var/list/cached_reagents = reagent_list
-	for(var/A in cached_reagents)
-		var/datum/reagent/R = A
+	for(var/datum/reagent/R as anything in cached_reagents)
 		if(R.id == reagent)
 			if(ishuman(my_atom))
 				var/mob/living/carbon/human/human = my_atom
 				if(human.can_metabolize(R))
 					R.on_mob_delete(human)
-			cached_reagents -= A
-			qdel(A)
+			cached_reagents -= R
+			qdel(R)
 			update_total()
 			if(my_atom)
 				my_atom.on_reagent_change()
@@ -707,11 +714,12 @@
  *
  * You won't use this much. Mostly in new procs for pre-filled objects.
  */
-/datum/reagents/proc/add_reagent(reagent, amount, list/data=null, reagtemp = T20C, no_react = FALSE)
+/datum/reagents/proc/add_reagent(reagent, amount, list/data = null, reagtemp = T20C, no_react = FALSE)
 	if(!isnum(amount))
 		return TRUE
 	update_total()
-	if(total_volume + amount > maximum_volume) amount = (maximum_volume - total_volume) //Doesnt fit in. Make it disappear. Shouldnt happen. Will happen.
+	if(total_volume + amount > maximum_volume)
+		amount = (maximum_volume - total_volume) // Doesnt fit in. Make it disappear. Shouldnt happen. Will happen.
 	if(amount <= 0)
 		return FALSE
 	// Contaminate the container with viruses if the reagent has any. We do this here rather than a reaction because it only depends on the data, and not necessarily the reagent.
