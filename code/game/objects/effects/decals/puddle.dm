@@ -7,7 +7,6 @@
 	/// The spillover/temporary holder of reagents. ALWAYS clear this out when you're done with it
 	var/datum/reagents/spillover_holder
 
-
 /obj/effect/decal/puddle/Initialize(mapload, datum/reagents/temp_holder)
 	. = ..()
 	reagents = new (50)
@@ -32,14 +31,6 @@
 // How the fuck does this shit even work - DGL
 //	AddComponent(/datum/component/connect_loc_behalf, src, list(COMSIG_ATOM_ENTERED = PROC_REF(on_puddle_enter)))
 
-/obj/effect/decal/puddle/proc/setup_chemicals()
-	for(var/datum/reagent/chem as anything in reagents.reagent_list)
-		chem.on_puddle_enter(src)
-
-/obj/effect/decal/puddle/proc/run_crossed()
-	for(var/datum/reagent/chem as anything in reagents.reagent_list)
-		chem.on_puddle_crossed(src)
-
 /obj/effect/decal/puddle/process()
 	var/reagent_count = length(reagents.reagent_list)
 	var/amount_to_remove = max(round(reagents.get_reagent_amount() * 0.1 / reagent_count), 1)
@@ -50,6 +41,27 @@
 		reagents.remove_reagent(chem.id, amount_to_remove)
 	if(!length(reagents.reagent_list))
 		qdel(src)
+
+/obj/effect/decal/puddle/update_icon_state()
+	switch(reagents.total_volume)
+		if(1 to 10)
+			icon_state = "small_puddle"
+		if(10 to 25)
+			icon_state = "medium_puddle"
+		if(25 to 50)
+			icon_state = "large_puddle"
+			for(var/turf/T as anything in get_adjacent_turfs(src))
+				if(!(locate(/obj/effect/decal/puddle) in T))
+					continue
+				icon_state += "_[get_dir(src, T)]"
+
+/obj/effect/decal/puddle/proc/setup_chemicals()
+	for(var/datum/reagent/chem as anything in reagents.reagent_list)
+		chem.on_puddle_enter(src)
+
+/obj/effect/decal/puddle/proc/run_crossed()
+	for(var/datum/reagent/chem as anything in reagents.reagent_list)
+		chem.on_puddle_crossed(src)
 
 /// Adds reagents to the puddle. Expects only transfers of already existing reagents
 /obj/effect/decal/puddle/proc/add_reagent(datum/reagents/temp_holder)
