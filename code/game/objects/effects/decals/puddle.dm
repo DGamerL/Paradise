@@ -1,4 +1,5 @@
 /obj/effect/decal/puddle
+	icon_state = "shadowcocoon"
 	/// Do we have any initial reagents? Is setup as an alist. Example: `"water" = 10'
 	var/alist/initial_reagents = alist()
 	/// Do we evaporate? False by default
@@ -9,6 +10,7 @@
 
 /obj/effect/decal/puddle/Initialize(mapload, datum/reagents/temp_holder)
 	. = ..()
+	reagents = new (50)
 	spillover_holder = new (1000) // If they manage to overflow this, chapeau
 	for(var/chem_id, amount in initial_reagents)
 		reagents.add_reagent(chem_id, amount)
@@ -16,11 +18,12 @@
 		return INITIALIZE_HINT_QDEL
 
 	if(temp_holder)
-		var/difference = temp_holder.total_volume > reagents.maximum_volume
+		var/difference = temp_holder.total_volume - reagents.maximum_volume
 		if(difference)
 			temp_holder.trans_to(spillover_holder, difference)
 			splash(spillover_holder)
 			spillover_holder.clear_reagents()
+		temp_holder.trans_to(reagents, 50)
 
 	setup_chemicals()
 	if(evaporation)
@@ -64,7 +67,7 @@
 
 /obj/effect/decal/puddle/proc/splash(datum/reagents/temp_holder)
 	var/list/possible_turfs = list()
-	for(var/turf/target as anything in get_adjacent_open_turfs())
+	for(var/turf/target as anything in get_adjacent_open_turfs(src))
 		if(locate(/obj/effect/decal/puddle) in target)
 			continue // No doublestacking puddles
 		possible_turfs += target
@@ -88,26 +91,17 @@
 			return
 
 /datum/reagent/proc/on_puddle_enter(obj/effect/decal/puddle/puddle)
-	SHOULD_CALL_PARENT(TRUE)
-	if(!puddle)
-		return
+	return
 
 /datum/reagent/water/on_puddle_enter(obj/effect/decal/puddle/puddle)
-	. = ..()
-	if(!.)
-		return
-	puddle.AddComponent(/datum/component/slippery)
+	puddle.AddComponent(/datum/component/slippery, puddle, 4 SECONDS)
 
 /datum/reagent/proc/on_puddle_crossed(obj/effect/decal/puddle/puddle)
 	// This is currently unimplemented since I have no fucking clue how the new crossed system works
 	return
 
 /datum/reagent/proc/puddle_fire_act(obj/effect/decal/puddle/puddle)
-	SHOULD_CALL_PARENT(TRUE)
-	if(!puddle)
-		return
+	return
 
 /datum/reagent/proc/on_puddle_removed(obj/effect/decal/puddle/puddle)
-	SHOULD_CALL_PARENT(TRUE)
-	if(!puddle)
-		return
+	return
