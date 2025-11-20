@@ -2,7 +2,7 @@
 	icon_state = "shadowcocoon"
 	/// Do we have any initial reagents? Is setup as an alist. Example: `"water" = 10'
 	var/alist/initial_reagents = alist()
-	/// Do we evaporate? False by default
+	/// Do we evaporate? Only used for pre-mapped puddles
 	var/evaporation = FALSE
 	/// The spillover/temporary holder of reagents. ALWAYS clear this out when you're done with it
 	var/datum/reagents/spillover_holder
@@ -24,6 +24,7 @@
 			spillover_holder.clear_reagents()
 		temp_holder.trans_to(reagents, 50)
 
+	RegisterSignal(get_turf(src), COMSIG_ATOM_ENTERED, PROC_REF(run_crossed))
 	setup_chemicals()
 	if(evaporation)
 		START_PROCESSING(SSprocessing, src)
@@ -59,9 +60,12 @@
 	for(var/datum/reagent/chem as anything in reagents.reagent_list)
 		chem.on_puddle_enter(src)
 
-/obj/effect/decal/puddle/proc/run_crossed()
+/obj/effect/decal/puddle/proc/run_crossed(datum/source, mob/living/victim)
+	message_admins("Someone entered")
+	if(!istype(victim)) // We only care about mobs
+		return
 	for(var/datum/reagent/chem as anything in reagents.reagent_list)
-		chem.on_puddle_crossed(src)
+		chem.on_puddle_crossed(src, victim)
 
 /// Adds reagents to the puddle. Expects only transfers of already existing reagents
 /obj/effect/decal/puddle/proc/add_reagent(datum/reagents/temp_holder)
@@ -107,9 +111,10 @@
 
 /datum/reagent/water/on_puddle_enter(obj/effect/decal/puddle/puddle)
 	puddle.AddComponent(/datum/component/slippery, puddle, 4 SECONDS)
+	START_PROCESSING(SSprocessing, puddle)
 
-/datum/reagent/proc/on_puddle_crossed(obj/effect/decal/puddle/puddle)
-	// This is currently unimplemented since I have no fucking clue how the new crossed system works
+/datum/reagent/proc/on_puddle_crossed(obj/effect/decal/puddle/puddle, mob/living/victim)
+	message_admins("YIPPEE")
 	return
 
 /datum/reagent/proc/puddle_fire_act(obj/effect/decal/puddle/puddle)
