@@ -61,7 +61,6 @@
 		chem.on_puddle_enter(src)
 
 /obj/effect/decal/puddle/proc/run_crossed(datum/source, mob/living/victim)
-	message_admins("Someone entered")
 	if(!istype(victim)) // We only care about mobs
 		return
 	for(var/datum/reagent/chem as anything in reagents.reagent_list)
@@ -114,7 +113,6 @@
 	START_PROCESSING(SSprocessing, puddle)
 
 /datum/reagent/proc/on_puddle_crossed(obj/effect/decal/puddle/puddle, mob/living/victim)
-	message_admins("YIPPEE")
 	return
 
 /datum/reagent/proc/puddle_fire_act(obj/effect/decal/puddle/puddle)
