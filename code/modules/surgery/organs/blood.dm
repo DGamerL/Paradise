@@ -270,37 +270,38 @@
 
 	if(small_drip)
 		// Only a certain number of drips (or one large splatter) can be on a given turf.
-		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in T
+		var/obj/effect/decal/puddle/drop = locate() in T
 		if(drop)
-			if(move_loop)
-				drop.newtonian_move(move_loop.direction, instant = TRUE)
-			if(drop.drips < 5)
-				drop.drips++
-				var/image/I = image(drop.icon, drop.random_icon_states)
-				I.icon += drop.basecolor
-				drop.overlays |= I
 
-				drop.transfer_mob_blood_dna(src)
-				if(b_data && !isnull(b_data["blood_color"]))
-					drop.basecolor = b_data["blood_color"]
-				else
-					drop.basecolor = "#A10808"
-				drop.update_icon()
-			else
-				temp_blood_DNA = list()
-				temp_blood_DNA |= drop.blood_DNA.Copy() //we transfer the dna from the drip to the splatter
-				qdel(drop)
-		else
-			drop = new(T)
+		/*
+			if(move_loop)
+				drop.newtonian_move(move_loop.direction, instant = TRUE) DGTODO */
+			var/datum/reagents/temp = new(5)
+			temp.add_reagent(get_blood_id(), 1)
+			drop.add_reagent()
 			drop.transfer_mob_blood_dna(src)
 			if(b_data && !isnull(b_data["blood_color"]))
 				drop.basecolor = b_data["blood_color"]
 			else
 				drop.basecolor = "#A10808"
 			drop.update_icon()
-			if(move_loop)
-				drop.newtonian_move(move_loop.direction, instant = TRUE)
-			return
+		else
+			temp_blood_DNA = list()
+			temp_blood_DNA |= drop.blood_DNA.Copy() //we transfer the dna from the drip to the splatter
+			qdel(drop)
+	else
+		var/datum/reagents/temp = new(5)
+		temp.add_reagent(get_blood_id(), 1)
+		drop = new(T)
+		drop.transfer_mob_blood_dna(src)
+		if(b_data && !isnull(b_data["blood_color"]))
+			drop.basecolor = b_data["blood_color"]
+		else
+			drop.basecolor = "#A10808"
+		drop.update_icon()
+		if(move_loop)
+			drop.newtonian_move(move_loop.direction, instant = TRUE)
+		return
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in T

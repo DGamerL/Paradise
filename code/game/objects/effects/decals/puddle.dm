@@ -29,9 +29,6 @@
 	if(evaporation)
 		START_PROCESSING(SSprocessing, src)
 
-// How the fuck does this shit even work - DGL
-//	AddComponent(/datum/component/connect_loc_behalf, src, list(COMSIG_ATOM_ENTERED = PROC_REF(on_puddle_enter)))
-
 /obj/effect/decal/puddle/process()
 	var/reagent_count = length(reagents.reagent_list)
 	var/amount_to_remove = max(round(reagents.get_reagent_amount() * 0.1 / reagent_count), 1)
@@ -56,6 +53,8 @@
 					continue
 				icon_state += "_[get_dir(src, T)]"
 
+	color = mix_color_from_reagents(reagents.reagent_list)
+
 /obj/effect/decal/puddle/proc/setup_chemicals()
 	for(var/datum/reagent/chem as anything in reagents.reagent_list)
 		chem.on_puddle_enter(src)
@@ -79,6 +78,7 @@
 
 	splash(spillover_holder)
 	spillover_holder.clear_reagents()
+	update_icon(UPDATE_ICON_STATE)
 
 /obj/effect/decal/puddle/proc/splash(datum/reagents/temp_holder)
 	var/list/possible_turfs = list()
