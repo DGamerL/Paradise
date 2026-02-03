@@ -206,7 +206,7 @@
 		var/list/mobtypes = typesof(/mob/living/simple_animal)
 		mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a Type", mobtypes)
 
-	if(!mobpath)
+	if(!ispath(mobpath, /mob/living))
 		return
 
 	if(notransform)
@@ -237,7 +237,7 @@
 		mobtypes |= subtypesof(/mob/living/basic)
 		mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a Type", mobtypes)
 
-	if(!mobpath)
+	if(!ispath(mobpath, /mob/living))
 		return
 
 	var/mob/new_mob = new mobpath(get_turf(src))
