@@ -792,7 +792,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(is_robotic())
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
 
-	if((status & ORGAN_BROKEN) || (limb_flags & CANNOT_BREAK) )
+	if((status & ORGAN_BROKEN) || (limb_flags & CANNOT_BREAK))
 		return
 	if(owner && !silent)
 		owner.audible_message(
