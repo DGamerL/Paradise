@@ -222,7 +222,7 @@
 	for(var/t in bodyparts)
 		qdel(t)
 
-	var/mob/new_mob = new mobpath(src.loc)
+	var/mob/new_mob = new mobpath(loc)
 
 	new_mob.key = key
 	new_mob.a_intent = INTENT_HARM
@@ -240,7 +240,7 @@
 	if(!ispath(mobpath, /mob/living))
 		return
 
-	var/mob/new_mob = new mobpath(get_turf(src))
+	var/mob/new_mob = new mobpath(loc)
 
 	new_mob.key = key
 	new_mob.a_intent = INTENT_HARM
