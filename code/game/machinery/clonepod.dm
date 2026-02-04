@@ -279,7 +279,7 @@
 					EO.burn_dam = desired_data.limbs[EO.limb_name][2]
 					EO.status = desired_data.limbs[EO.limb_name][3]
 					if(EO.status & ORGAN_BROKEN)
-						EO.fracture(TRUE, null, TRUE) // Silent bonebreak
+						EO.create_fracture_wound()
 					clone.adjustCloneLoss(4 / speed_modifier)
 					clone.regenerate_icons()
 					return
@@ -330,7 +330,7 @@
 			limb.burn_dam = desired_data.limbs[active_limb_name][2]
 			limb.status = desired_data.limbs[active_limb_name][3]
 			if(limb.status & ORGAN_BROKEN)
-				limb.fracture(TRUE, null, TRUE) // Silent bonebreak
+				limb.create_fracture_wound()
 			continue
 
 		if(length(limb.children)) //This doesn't support having a vital organ inside a child of a limb that itself isn't vital.

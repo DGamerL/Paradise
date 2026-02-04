@@ -788,12 +788,11 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"\The [holder.legcuffed.name] falls off you.")
 		holder.drop_item_to_ground(holder.legcuffed)
 
-/obj/item/organ/external/proc/fracture(silent = FALSE, fracture_name_override, clone_snowflake_fix = FALSE)
+/obj/item/organ/external/proc/fracture(silent = FALSE, fracture_name_override)
 	if(is_robotic())
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
 
-	// Clones are weird because they preset the limb status
-	if(((status & ORGAN_BROKEN) && !clone_snowflake_fix) || (limb_flags & CANNOT_BREAK) )
+	if((status & ORGAN_BROKEN) || (limb_flags & CANNOT_BREAK) )
 		return
 	if(owner && !silent)
 		owner.audible_message(
@@ -806,15 +805,18 @@ Note that amputating the affected organ does in fact remove the infection from t
 			owner.emote("scream")
 
 	status |= ORGAN_BROKEN
+	create_fracture_wound(fracture_name_override)
+
+	// Fractures have a chance of getting you out of restraints
+	if(prob(25))
+		release_restraints()
+
+/obj/item/organ/external/proc/create_fracture_wound(fracture_name_override)
 	var/picked_type = pick(typesof(/datum/wound/fracture))
 	var/datum/wound/fracture = new picked_type(src)
 	if(fracture_name_override)
 		fracture.name = fracture_name_override
 	wound_list += fracture
-
-	// Fractures have a chance of getting you out of restraints
-	if(prob(25))
-		release_restraints()
 
 /obj/item/organ/external/proc/mend_fracture()
 	if(is_robotic())
