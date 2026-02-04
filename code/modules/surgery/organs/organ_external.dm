@@ -788,11 +788,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"\The [holder.legcuffed.name] falls off you.")
 		holder.drop_item_to_ground(holder.legcuffed)
 
-/obj/item/organ/external/proc/fracture(silent = FALSE, fracture_name_override)
+/obj/item/organ/external/proc/fracture(silent = FALSE, fracture_name_override, clone_snowflake_fix = FALSE)
 	if(is_robotic())
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
 
-	if((status & ORGAN_BROKEN) || (limb_flags & CANNOT_BREAK))
+	// Clones are weird because they preset the limb status
+	if(((status & ORGAN_BROKEN) && !clone_snowflake_fix) || (limb_flags & CANNOT_BREAK) )
 		return
 	if(owner && !silent)
 		owner.audible_message(
