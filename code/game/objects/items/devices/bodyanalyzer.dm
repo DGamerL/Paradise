@@ -219,7 +219,12 @@
 			splint = "Splinted:"
 		if(e.status & ORGAN_BROKEN)
 			var/datum/wound/fracture = e.get_wound(/datum/wound/fracture)
-			AN = "[fracture.name]:"
+			if(!fracture)
+				log_debug("[M]'s [e] has the `ORGAN_BROKEN` status flag but no wound datum was found.")
+				AN = "Fractured:"
+			else
+				AN = "[fracture.name]:"
+
 		if(e.is_robotic())
 			robot = "Robotic:"
 		if(e.open)

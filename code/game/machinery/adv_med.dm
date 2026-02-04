@@ -348,7 +348,11 @@
 			var/organStatus[0]
 			if(E.status & ORGAN_BROKEN)
 				var/datum/wound/fracture = E.get_wound(/datum/wound/fracture)
-				organStatus["broken"] = fracture.name
+				if(!fracture)
+					log_debug("[user]'s [E] has the `ORGAN_BROKEN` status flag but no wound datum was found.")
+					organStatus["broken"] = "Fractured"
+				else
+					organStatus["broken"] = fracture.name
 
 			if(E.is_robotic())
 				organStatus["robotic"] = TRUE
@@ -510,7 +514,11 @@
 				ailments |= "Splinted"
 			if(e.status & ORGAN_BROKEN)
 				var/datum/wound/fracture = e.get_wound(/datum/wound/fracture)
-				ailments |= "[fracture.name]"
+				if(!fracture)
+					log_debug("[occupant]'s [e] has the `ORGAN_BROKEN` status flag but no wound datum was found.")
+					ailments |= "Fractured"
+				else
+					ailments |= "[fracture.name]"
 			if(e.status & ORGAN_SALVED)
 				ailments |= "Salved"
 			if(e.status & ORGAN_BURNT)
