@@ -37,21 +37,21 @@
 
 // MARK: Fractures
 /datum/wound/fracture
-	name = "hairline fracture"
+	name = "Hairline fracture"
 
 // One day these will be more than just renamed variants
 /datum/wound/fracture/spiral
-	name = "spiral fracture"
+	name = "Spiral fracture"
 
 /datum/wound/fracture/transverse
-	name = "transverse fracture"
+	name = "Transverse fracture"
 
 /datum/wound/facture/linear
-	name = "linear fracture"
+	name = "Linear fracture"
 
 // MARK: Ruptured lungs
 /datum/wound/ruptured_lungs
-	name = "ruptured lungs"
+	name = "Ruptured lungs"
 
 /datum/wound/ruptured_lungs/do_effect()
 	if(prob(2) && !(NO_BLOOD in parent.owner.dna.species.species_traits))
@@ -62,7 +62,7 @@
 		parent.owner.AdjustLoseBreath(10 SECONDS)
 
 /datum/wound/cirrhosis
-	name = "cirrhosis"
+	name = "Cirrhosis"
 	/// Cirrhosis has two "gamefied" stages, mild and severe
 	var/stage = CIRRHOSIS_MILD
 
