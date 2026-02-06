@@ -346,9 +346,8 @@ I use this so that this can be made better once the organ overhaul rolls out -- 
 
 /// Wound datum adding helper. Returns the wound datum
 /obj/item/organ/proc/add_wound(wound_path)
-	var/datum/wound/wound = new wound_path(src)
-	wound_list += wound
-	return wound
+	// Passing the organ with the arg puts it on the wound list automatically
+	return new wound_path(src)
 
 /// Finds a wound datum. `wound_to_find` should be a typepath, and if `exact` is FALSE, it will grab subtypes aswell.
 /obj/item/organ/proc/get_wound(wound_to_find, exact = FALSE)
