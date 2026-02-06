@@ -61,6 +61,7 @@
 		parent.owner.custom_emote(EMOTE_VISIBLE, "gasps for air!")
 		parent.owner.AdjustLoseBreath(10 SECONDS)
 
+// MARK: Cirrhosis
 /datum/wound/cirrhosis
 	name = "Cirrhosis"
 	/// Cirrhosis has two "gamefied" stages, mild and severe
