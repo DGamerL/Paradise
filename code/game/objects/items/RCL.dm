@@ -56,9 +56,10 @@
 		var/obj/item/stack/cable_coil/C = target
 		C.melee_attack_chain(user, src, list2params(modifiers))
 		return ITEM_INTERACT_COMPLETE
-	
-	loaded.melee_attack_chain(user, target, list2params(modifiers))
-	return ITEM_INTERACT_COMPLETE
+
+	if(isturf(target))
+		loaded.melee_attack_chain(user, target, list2params(modifiers))
+		return ITEM_INTERACT_COMPLETE
 
 /obj/item/rcl/proc/refresh_icon(mob/user)
 	update_icon(UPDATE_ICON_STATE|UPDATE_OVERLAYS)
@@ -206,7 +207,7 @@
 /obj/item/rcl/robot/AltClick(mob/user, modifiers)
 	if(..())
 		return ITEM_INTERACT_COMPLETE
-	
+
 	if(heavy_mode)
 		loaded.cable_type = /obj/structure/cable
 		loaded.cable_merge_id = CABLE_LOW_POWER

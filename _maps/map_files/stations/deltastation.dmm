@@ -28605,6 +28605,11 @@
 	c_tag = "Brig Firing Range";
 	dir = 6
 	},
+/obj/item/storage/box/flashbangs,
+/obj/item/storage/box/flashbangs{
+	pixel_x = -4;
+	pixel_y = -4
+	},
 /turf/simulated/floor/plasteel,
 /area/station/security/range)
 "cjD" = (
@@ -29337,30 +29342,28 @@
 /area/station/security/range)
 "cmG" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/box/flashbangs{
-	pixel_x = -4;
-	pixel_y = -4
-	},
-/obj/item/storage/box/flashbangs,
 /obj/machinery/light,
-/turf/simulated/floor/plasteel,
-/area/station/security/range)
-"cmH" = (
-/obj/structure/table/reinforced,
-/obj/machinery/recharger,
-/obj/structure/window/reinforced{
-	dir = 8
+/obj/item/gun/energy/laser/practice{
+	pixel_x = 2;
+	pixel_y = 2
 	},
 /obj/item/gun/energy/laser/practice{
 	pixel_x = -1;
 	pixel_y = -1
 	},
-/obj/item/gun/energy/laser/practice{
-	pixel_x = 2;
-	pixel_y = 2
+/turf/simulated/floor/plasteel,
+/area/station/security/range)
+"cmH" = (
+/obj/structure/table/reinforced,
+/obj/structure/window/reinforced{
+	dir = 8
 	},
 /obj/machinery/recharger/wallcharger{
 	pixel_y = -27
+	},
+/obj/machinery/magnetic_controller,
+/obj/machinery/recharger/wallcharger{
+	pixel_y = -35
 	},
 /turf/simulated/floor/plasteel,
 /area/station/security/range)
@@ -44670,6 +44673,7 @@
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "dwk" = (
+/obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "dwl" = (
@@ -44861,6 +44865,12 @@
 /obj/machinery/atmospherics/pipe/manifold/hidden{
 	dir = 1
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 6
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 8
+	},
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "dxu" = (
@@ -44870,6 +44880,12 @@
 /obj/machinery/atmospherics/pipe/simple/hidden{
 	dir = 9
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 8
+	},
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "dxw" = (
@@ -44877,6 +44893,12 @@
 	icon_state = "4-8"
 	},
 /obj/effect/turf_decal/tiles/department/science/corner{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 8
 	},
 /turf/simulated/floor/plasteel/white,
@@ -45086,6 +45108,10 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 6
 	},
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 4
+	},
+/obj/machinery/alarm/server/directional/west,
 /turf/simulated/floor/bluegrid{
 	icon_state = "gcircuit";
 	name = "Mainframe Floor";
@@ -45093,13 +45119,22 @@
 	oxygen = 0;
 	temperature = 80
 	},
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dzQ" = (
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 9
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 9
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 5
+	},
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
 /turf/simulated/floor/plasteel/dark,
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dzS" = (
 /obj/structure/table,
 /obj/machinery/camera{
@@ -45280,6 +45315,7 @@
 	dir = 5
 	},
 /obj/machinery/r_n_d/server/station,
+/obj/machinery/light/small,
 /turf/simulated/floor/bluegrid{
 	icon_state = "gcircuit";
 	name = "Mainframe Floor";
@@ -45287,14 +45323,15 @@
 	oxygen = 0;
 	temperature = 80
 	},
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dBe" = (
-/obj/machinery/light/small,
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 4
 	},
+/obj/machinery/power/apc/directional/south,
+/obj/structure/cable,
 /turf/simulated/floor/plasteel/dark,
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dBf" = (
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 9
@@ -45307,7 +45344,7 @@
 	oxygen = 0;
 	temperature = 80
 	},
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dBk" = (
 /obj/effect/spawner/random/fungus/frequent,
 /turf/simulated/wall,
@@ -48407,6 +48444,9 @@
 	network = list("SS13","Research")
 	},
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging,
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
 /turf/simulated/floor/bluegrid{
 	icon_state = "gcircuit";
 	name = "Mainframe Floor";
@@ -48414,7 +48454,7 @@
 	oxygen = 0;
 	temperature = 80
 	},
-/area/station/science/server)
+/area/station/science/server/coldroom)
 "dVn" = (
 /obj/machinery/power/solar{
 	name = "Aft Starboard Solar Panel"
@@ -51386,6 +51426,12 @@
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 8
+	},
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "eQh" = (
@@ -53270,7 +53316,7 @@
 	icon_state = "2-4"
 	},
 /obj/effect/turf_decal/tiles/neutral,
-/obj/machinery/atmospherics/pipe/simple/hidden,
+/obj/machinery/atmospherics/pipe/simple/visible,
 /turf/simulated/floor/plasteel,
 /area/station/engineering/atmos)
 "fGs" = (
@@ -70591,6 +70637,9 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/station/public/fitness)
+"mYR" = (
+/turf/simulated/wall/r_wall,
+/area/station/science/server/coldroom)
 "mZk" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -75956,6 +76005,14 @@
 	icon_state = "1-8"
 	},
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 8
+	},
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
 /turf/simulated/floor/plasteel/dark,
 /area/station/science/server)
 "plY" = (
@@ -86927,8 +86984,12 @@
 	icon_state = "2-8"
 	},
 /obj/structure/disposalpipe/segment,
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
-/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/research)
 "tDU" = (
@@ -95027,8 +95088,7 @@
 "wNH" = (
 /obj/effect/turf_decal/tiles/neutral,
 /obj/machinery/atmospherics/pipe/simple/visible{
-	dir = 6;
-	level = 1
+	dir = 6
 	},
 /turf/simulated/floor/plasteel,
 /area/station/engineering/atmos)
@@ -134357,8 +134417,8 @@ dff
 dwi
 eQe
 dwi
-dwi
-dwi
+mYR
+mYR
 wJr
 lyD
 uic

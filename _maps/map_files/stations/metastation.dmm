@@ -32906,6 +32906,14 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/station/maintenance/port)
+"ewZ" = (
+/obj/machinery/magnetic_controller{
+	autolink = 1;
+	name = "Firing Range Control Console";
+	path = "w;e;e;w;s;n;n;s"
+	},
+/turf/simulated/wall,
+/area/station/security/range)
 "exh" = (
 /obj/structure/table/wood,
 /obj/item/radio/intercom{
@@ -34737,11 +34745,11 @@
 /turf/simulated/floor/plasteel/dark/full,
 /area/station/security/evidence)
 "fbL" = (
-/obj/machinery/atmospherics/trinary/mixer{
-	dir = 4
-	},
 /obj/effect/turf_decal/tiles/department/science/side{
 	dir = 1
+	},
+/obj/machinery/atmospherics/unary/portables_connector{
+	layer = 2
 	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
@@ -35533,12 +35541,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel,
 /area/station/maintenance/fore)
-"fnG" = (
-/obj/effect/turf_decal/tiles/department/security/side{
-	dir = 4
-	},
-/turf/simulated/wall,
-/area/station/security/prisonlockers)
 "fnQ" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 8
@@ -43500,18 +43502,6 @@
 	},
 /turf/simulated/floor/plating,
 /area/station/science/robotics/chargebay)
-"icj" = (
-/obj/machinery/magnetic_controller{
-	autolink = 1;
-	name = "Firing Range Control Console";
-	path = "w;e;e;w;s;n;n;s";
-	pixel_y = 28
-	},
-/obj/effect/turf_decal/tiles/department/security/side{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel,
-/area/station/security/range)
 "icn" = (
 /obj/machinery/power/apc/directional/north,
 /obj/structure/cable{
@@ -46277,12 +46267,13 @@
 /turf/simulated/floor/plasteel,
 /area/station/security/processing)
 "iVX" = (
-/obj/machinery/atmospherics/unary/portables_connector{
-	dir = 4
-	},
 /obj/effect/turf_decal/tiles/department/science/side{
 	dir = 1
 	},
+/obj/machinery/atmospherics/unary/portables_connector{
+	layer = 2
+	},
+/obj/machinery/atmospherics/portable/canister,
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
 "iWa" = (
@@ -57322,6 +57313,12 @@
 /obj/effect/spawner/random/cobweb/left/rare,
 /turf/simulated/floor/carpet/arcade,
 /area/station/maintenance/fore)
+"mHi" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 5
+	},
+/turf/simulated/floor/plasteel/white,
+/area/station/science/toxins/mixing)
 "mHn" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -60419,9 +60416,6 @@
 /turf/simulated/floor/plasteel/white,
 /area/station/medical/virology)
 "nIS" = (
-/obj/machinery/atmospherics/unary/portables_connector{
-	dir = 8
-	},
 /obj/machinery/door_control{
 	id = "ToxinsVenting";
 	layer = 3.3;
@@ -60436,6 +60430,10 @@
 	pixel_y = -26
 	},
 /obj/effect/turf_decal/tiles/department/science/side,
+/obj/machinery/atmospherics/binary/pump{
+	dir = 4;
+	name = "Burn Chamber to Port"
+	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
 "nJa" = (
@@ -62052,12 +62050,11 @@
 /turf/simulated/floor/plasteel,
 /area/station/hallway/primary/fore/north)
 "okT" = (
-/obj/machinery/atmospherics/binary/pump{
-	dir = 4;
-	name = "Burn Chamber to Port"
-	},
 /obj/effect/turf_decal/tiles/department/science/side{
 	dir = 10
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
@@ -68965,6 +68962,9 @@
 /obj/effect/turf_decal/tiles/department/science/side{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 9
+	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
 "qEX" = (
@@ -75853,12 +75853,11 @@
 /turf/simulated/floor/plasteel/dark,
 /area/station/legal/courtroom/gallery)
 "sYv" = (
-/obj/machinery/atmospherics/unary/portables_connector{
-	dir = 8
-	},
-/obj/machinery/atmospherics/portable/canister,
 /obj/effect/turf_decal/tiles/department/science/side{
 	dir = 5
+	},
+/obj/machinery/atmospherics/unary/portables_connector{
+	layer = 2
 	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
@@ -76256,6 +76255,9 @@
 /area/station/engineering/engine/reactor)
 "tfn" = (
 /obj/effect/turf_decal/tiles/department/science/side,
+/obj/machinery/atmospherics/unary/portables_connector{
+	dir = 8
+	},
 /turf/simulated/floor/plasteel/white,
 /area/station/science/toxins/mixing)
 "tfp" = (
@@ -81975,6 +81977,12 @@
 	},
 /turf/simulated/floor/plasteel/white,
 /area/station/medical/medbay)
+"vds" = (
+/obj/machinery/atmospherics/trinary/mixer{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel/white,
+/area/station/science/toxins/mixing)
 "vdx" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig"
@@ -117482,7 +117490,7 @@ tKg
 jaM
 rAk
 iqG
-fnG
+vdE
 vDs
 uSc
 dgr
@@ -121864,8 +121872,8 @@ mQs
 mQs
 mQs
 mQs
-mQs
-icj
+ewZ
+nhc
 tbQ
 hvk
 vLI
@@ -127125,7 +127133,7 @@ tDw
 tDw
 bXG
 iVX
-kgx
+mHi
 fpl
 pIF
 qRR
@@ -127382,7 +127390,7 @@ tDw
 tDw
 bXG
 fbL
-tvT
+vds
 fpl
 pIF
 wgF

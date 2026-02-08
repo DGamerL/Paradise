@@ -18708,13 +18708,12 @@
 /area/station/public/fitness)
 "dME" = (
 /obj/structure/table/reinforced,
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 8;
-	id_tag = "smithdesk"
-	},
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tiles/department/chemistry,
 /obj/effect/turf_decal/tiles/department/security/checker,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "dormshop1"
+	},
 /turf/simulated/floor/plasteel,
 /area/station/public/shops)
 "dMF" = (
@@ -87633,13 +87632,12 @@
 /obj/item/eftpos/register{
 	dir = 8
 	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 8;
-	id_tag = "smithdesk"
-	},
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tiles/department/chemistry,
 /obj/effect/turf_decal/tiles/department/security/checker,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "dormshop1"
+	},
 /turf/simulated/floor/plasteel,
 /area/station/public/shops)
 "rBZ" = (
@@ -89887,15 +89885,15 @@
 /turf/simulated/floor/plating/airless,
 /area/station/engineering/atmos/asteroid_filtering)
 "rWF" = (
+/obj/structure/table,
+/obj/item/paper/crumpled,
+/obj/effect/turf_decal/tiles/department/chemistry,
+/obj/effect/turf_decal/tiles/department/security/checker,
 /obj/machinery/door_control{
 	id = "dormshop1";
 	name = "Privacy Shutters";
 	pixel_y = 24
 	},
-/obj/structure/table,
-/obj/item/paper/crumpled,
-/obj/effect/turf_decal/tiles/department/chemistry,
-/obj/effect/turf_decal/tiles/department/security/checker,
 /turf/simulated/floor/plasteel,
 /area/station/public/shops)
 "rWI" = (
@@ -95854,7 +95852,8 @@
 	dir = 4
 	},
 /obj/machinery/door/poddoor/shutters/preopen{
-	id_tag = "dormshop2"
+	id_tag = "dormshop2";
+	dir = 8
 	},
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tiles/department/chemistry,
@@ -102573,14 +102572,13 @@
 /area/station/maintenance/starboard)
 "uyA" = (
 /obj/structure/table/reinforced,
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 8;
-	id_tag = "smithdesk"
-	},
 /obj/item/food/meatbun,
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tiles/department/chemistry,
 /obj/effect/turf_decal/tiles/department/security/checker,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "dormshop1"
+	},
 /turf/simulated/floor/plasteel,
 /area/station/public/shops)
 "uyB" = (
@@ -120965,12 +120963,13 @@
 /area/station/hallway/primary/starboard)
 "yls" = (
 /obj/structure/table/reinforced,
-/obj/machinery/door/poddoor/shutters/preopen{
-	id_tag = "dormshop2"
-	},
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tiles/department/chemistry,
 /obj/effect/turf_decal/tiles/department/security/checker,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "dormshop2";
+	dir = 8
+	},
 /turf/simulated/floor/plasteel,
 /area/station/public/shops)
 "ylt" = (
